@@ -11,7 +11,7 @@ use crate::{
     Fragment, Property,
     Signal::{self, Medium, Strong, Weak},
 };
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 use std::{collections::BTreeMap, sync::Arc};
 
 /// The figure below is a Cell that can contain 1 character, divided into 32 equal small rectangles called CellGrid.
@@ -28,7 +28,7 @@ use std::{collections::BTreeMap, sync::Arc};
 ///     8└─┴─┴─┴─┘        U└─┴─┴─┴─┘Y
 /// ```                      V W X
 
-pub static ASCII_PROPERTIES: Lazy<BTreeMap<char, Property>> = Lazy::new(|| {
+pub static ASCII_PROPERTIES: LazyLock<BTreeMap<char, Property>> = LazyLock::new(|| {
     let cell = Cell::new(0, 0);
 
     let a = CellGrid::a();

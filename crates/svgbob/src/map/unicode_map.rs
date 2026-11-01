@@ -9,7 +9,7 @@ use crate::{
     fragment::{arc, broken_line, circle, line, polygon, rect, Fragment},
     Property,
 };
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 use std::collections::{BTreeMap, HashMap};
 
 /// a lookup table for character and their corresponding shapes
@@ -37,8 +37,8 @@ use std::collections::{BTreeMap, HashMap};
 ///     7├─┼─┼─┼─┤         │ │ │ │ │
 ///     8└─┴─┴─┴─┘        U└─┴─┴─┴─┘Y
 /// ```                      V W X
-pub static UNICODE_FRAGMENTS: Lazy<BTreeMap<char, Vec<Fragment>>> =
-    Lazy::new(|| {
+pub static UNICODE_FRAGMENTS: LazyLock<BTreeMap<char, Vec<Fragment>>> =
+    LazyLock::new(|| {
         let a = CellGrid::a();
         let b = CellGrid::b();
         let c = CellGrid::c();
@@ -364,8 +364,8 @@ pub static UNICODE_FRAGMENTS: Lazy<BTreeMap<char, Vec<Fragment>>> =
     });
 
 /// the reverse of shape to character lookup
-pub static FRAGMENTS_UNICODE: Lazy<BTreeMap<&'static Vec<Fragment>, char>> =
-    Lazy::new(|| {
+pub static FRAGMENTS_UNICODE: LazyLock<BTreeMap<&'static Vec<Fragment>, char>> =
+    LazyLock::new(|| {
         UNICODE_FRAGMENTS.iter().fold(
             BTreeMap::new(),
             |mut acc, (ch, shapes)| {
@@ -375,8 +375,8 @@ pub static FRAGMENTS_UNICODE: Lazy<BTreeMap<&'static Vec<Fragment>, char>> =
         )
     });
 
-pub static UNICODE_PROPERTIES: Lazy<HashMap<char, Property>> =
-    Lazy::new(|| {
+pub static UNICODE_PROPERTIES: LazyLock<HashMap<char, Property>> =
+    LazyLock::new(|| {
         UNICODE_FRAGMENTS
             .iter()
             .fold(HashMap::new(), |mut acc, (ch, frags)| {

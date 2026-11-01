@@ -10,6 +10,28 @@
 - Add byte-parity goldens (`tests/parity/`, all `test_data/*.bob` fixtures
   through the three public entry points) generated at the last sauron
   revision, with `examples/gen_parity.rs` to regenerate them deliberately.
+- Dependency currency: `nalgebra` 0.32 -> 0.34 and `parry2d` 0.13 -> 0.25
+  (lockstep: on crates.io, parry2d 0.25.3 is the newest release whose
+  dependency list still names nalgebra; 0.26 and later list glam instead),
+  `unicode-width` 0.1 -> 0.2, `itertools` 0.11 -> 0.15, and `once_cell`
+  replaced with `std::sync::LazyLock`. The byte-parity suites pass across
+  every bump for the whole `test_data` fixture corpus.
+- Behavior change from `unicode-width` 0.2: its width tables moved to a
+  newer Unicode revision, so text that uses characters whose column width
+  changed (for example conjoining Hangul jamo, now zero, and some
+  emoji-presentation characters, now two) occupies a different number of
+  grid cells than before. The fixture corpus is unaffected. Quoted-text
+  replacement now sums per-char widths instead of taking the string-level
+  width, keeping it aligned with the per-char cell grid now that the two
+  can disagree (ZWJ and variation-selector sequences).
+- svgbob_cli: upgrade clap 2 -> 4. This drops the unmaintained atty
+  (RUSTSEC-2021-0145) and ansi_term (RUSTSEC-2021-0139) crates and the
+  duplicate unicode-width 0.1 that clap 2 pulled in. Flags and behavior
+  are unchanged.
+- Version 0.8.0: the re-exported `nalgebra` changed major version, which is
+  a breaking change for any consumer that interoperates with svgbob's
+  nalgebra or parry2d types. `rust-version = "1.87"` is now declared
+  (nalgebra 0.34's MSRV; `LazyLock` needs 1.80).
 
 ## 0.7.2
 - update to sauron 0.60

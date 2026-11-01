@@ -5,7 +5,7 @@ use crate::{
     Cell, Point, Settings,
 };
 use indexmap::IndexMap;
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 use std::{
     collections::{BTreeMap, HashMap},
     iter::FromIterator,
@@ -38,8 +38,8 @@ pub const CIRCLES_TO_SKIP_FOR_ARC: usize = 3;
 /// f32 - how many cell from the top most to the center.y of the circle,
 /// Cell - center cell in arc2
 /// )
-static CIRCLE_ART_MAP: Lazy<Vec<(&'static str, Horizontal, f32, f32, Cell)>> =
-    Lazy::new(|| {
+static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>> =
+    LazyLock::new(|| {
         vec![
             // CIRCLE_0
             //center 1,0,k, radius = 0.5
@@ -636,7 +636,7 @@ pub struct ArcSpans {
     arc_spans: Vec<(Arc, Span)>,
 }
 
-static CIRCLE_MAP: Lazy<Vec<CircleArt>> = Lazy::new(|| {
+static CIRCLE_MAP: LazyLock<Vec<CircleArt>> = LazyLock::new(|| {
     Vec::from_iter(CIRCLE_ART_MAP.iter().enumerate().map(
         |(
             ndx,
@@ -654,7 +654,7 @@ static CIRCLE_MAP: Lazy<Vec<CircleArt>> = Lazy::new(|| {
 
 /// The fragments for each of the circle
 /// Calculate the span and get the group fragments
-static FRAGMENTS_CIRCLE: Lazy<Vec<(Vec<Contacts>, Circle)>> = Lazy::new(|| {
+static FRAGMENTS_CIRCLE: LazyLock<Vec<(Vec<Contacts>, Circle)>> = LazyLock::new(|| {
     Vec::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
         (
             circle_art_to_group(circle_art.ascii_art),
@@ -664,8 +664,8 @@ static FRAGMENTS_CIRCLE: Lazy<Vec<(Vec<Contacts>, Circle)>> = Lazy::new(|| {
 });
 
 /// map of circle spans and their radius
-pub static DIAMETER_CIRCLE: Lazy<HashMap<i32, (Point, Span)>> =
-    Lazy::new(|| {
+pub static DIAMETER_CIRCLE: LazyLock<HashMap<i32, (Point, Span)>> =
+    LazyLock::new(|| {
         HashMap::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
             let cb = CellBuffer::from(circle_art.ascii_art);
             let mut spans= Vec::<Span>::from(&cb);
@@ -676,7 +676,7 @@ pub static DIAMETER_CIRCLE: Lazy<HashMap<i32, (Point, Span)>> =
     });
 
 /// There is only 1 span per circle, and localized
-pub static CIRCLES_SPAN: Lazy<IndexMap<Circle, Span>> = Lazy::new(|| {
+pub static CIRCLES_SPAN: LazyLock<IndexMap<Circle, Span>> = LazyLock::new(|| {
     IndexMap::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
         let cb = CellBuffer::from(circle_art.ascii_art);
         let mut spans =  Vec::<Span>::from(&cb);
@@ -700,7 +700,7 @@ pub static CIRCLES_SPAN: Lazy<IndexMap<Circle, Span>> = Lazy::new(|| {
 /// bottom_left  bottom   bottom_right
 ///
 /// (diameter, quarter arcs)
-pub static QUARTER_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> = Lazy::new(|| {
+pub static QUARTER_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> = LazyLock::new(|| {
     BTreeMap::from_iter(CIRCLE_MAP.iter().skip(CIRCLES_TO_SKIP_FOR_ARC).map(
         |circle_art| {
             let span = circle_art_to_span(circle_art.ascii_art);
@@ -778,7 +778,7 @@ pub static QUARTER_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> = Lazy::new(|| {
     ))
 });
 
-pub static HALF_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> = Lazy::new(|| {
+pub static HALF_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> = LazyLock::new(|| {
     BTreeMap::from_iter(CIRCLE_MAP.iter().skip(CIRCLES_TO_SKIP_FOR_ARC).map(
         |circle_art| {
             let span = circle_art_to_span(circle_art.ascii_art);
@@ -876,8 +876,8 @@ pub static HALF_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> = Lazy::new(|| {
     ))
 });
 
-pub static THREE_QUARTERS_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> =
-    Lazy::new(|| {
+pub static THREE_QUARTERS_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> =
+    LazyLock::new(|| {
         BTreeMap::from_iter(
             CIRCLE_MAP
                 .iter()
@@ -972,9 +972,9 @@ pub static THREE_QUARTERS_ARC_SPAN: Lazy<BTreeMap<i32, ArcSpans>> =
         )
     });
 
-pub static FLATTENED_QUARTER_ARC_SPAN: Lazy<
+pub static FLATTENED_QUARTER_ARC_SPAN: LazyLock<
     BTreeMap<DiameterArc, (Arc, Span)>,
-> = Lazy::new(|| {
+> = LazyLock::new(|| {
     BTreeMap::from_iter(QUARTER_ARC_SPAN.iter().flat_map(
         |(diameter, arc_spans)| {
             arc_spans.arc_spans.iter().enumerate().map(
@@ -992,8 +992,8 @@ pub static FLATTENED_QUARTER_ARC_SPAN: Lazy<
     ))
 });
 
-pub static FLATTENED_HALF_ARC_SPAN: Lazy<BTreeMap<DiameterArc, (Arc, Span)>> =
-    Lazy::new(|| {
+pub static FLATTENED_HALF_ARC_SPAN: LazyLock<BTreeMap<DiameterArc, (Arc, Span)>> =
+    LazyLock::new(|| {
         BTreeMap::from_iter(HALF_ARC_SPAN.iter().flat_map(
             |(diameter, arc_spans)| {
                 arc_spans.arc_spans.iter().enumerate().map(
@@ -1011,9 +1011,9 @@ pub static FLATTENED_HALF_ARC_SPAN: Lazy<BTreeMap<DiameterArc, (Arc, Span)>> =
         ))
     });
 
-pub static FLATTENED_THREE_QUARTERS_ARC_SPAN: Lazy<
+pub static FLATTENED_THREE_QUARTERS_ARC_SPAN: LazyLock<
     BTreeMap<DiameterArc, (Arc, Span)>,
-> = Lazy::new(|| {
+> = LazyLock::new(|| {
     BTreeMap::from_iter(THREE_QUARTERS_ARC_SPAN.iter().flat_map(
         |(diameter, arc_spans)| {
             arc_spans.arc_spans.iter().enumerate().map(

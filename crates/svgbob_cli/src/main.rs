@@ -1,8 +1,4 @@
 #![deny(warnings)]
-#[macro_use]
-extern crate clap;
-
-extern crate svgbob;
 
 use svgbob::Settings;
 
@@ -15,58 +11,48 @@ use std::process::exit;
 use std::str::FromStr;
 
 fn main() {
-    use clap::{App, Arg, SubCommand};
+    use clap::{Arg, ArgAction, Command};
 
-    let args = App::new("svgbob")
-        .version(crate_version!())
+    let args = Command::new("svgbob")
+        .version(env!("CARGO_PKG_VERSION"))
         .about("SvgBobRus is an ascii to svg converter")
-        .arg(Arg::with_name("background")
+        .arg(Arg::new("background")
              .long("background")
-             .takes_value(true)
              .help("backdrop background will be filled with this color (default: 'white')"))
-        .arg(Arg::with_name("inline").short("s").help("parse an inline string"))
-        .arg(Arg::with_name("input").index(1).help("svgbob text file or inline string to parse [default: STDIN]"))
-        .arg(Arg::with_name("output")
-            .short("o")
+        .arg(Arg::new("inline").short('s').action(ArgAction::SetTrue).help("parse an inline string"))
+        .arg(Arg::new("input").index(1).help("svgbob text file or inline string to parse [default: STDIN]"))
+        .arg(Arg::new("output")
+            .short('o')
             .long("output")
-            .takes_value(true)
             .help("where to write svg output [default: STDOUT]"))
-        .arg(Arg::with_name("fill-color")
+        .arg(Arg::new("fill-color")
              .long("fill-color")
-             .takes_value(true)
              .help("solid shapes will be filled with this color (default: 'black')"))
-        .arg(Arg::with_name("font-family")
+        .arg(Arg::new("font-family")
              .long("font-family")
-             .takes_value(true)
              .help("text will be rendered with this font (default: 'arial')"))
-        .arg(Arg::with_name("font-size")
+        .arg(Arg::new("font-size")
              .long("font-size")
-             .takes_value(true)
              .help("text will be rendered with this font size (default: 14)"))
-         .arg(Arg::with_name("stroke-width")
+         .arg(Arg::new("stroke-width")
              .long("stroke-width")
-             .takes_value(true)
              .help("stroke width for all lines (default: 2)"))
-        .arg(Arg::with_name("stroke-color")
+        .arg(Arg::new("stroke-color")
              .long("stroke-color")
-             .takes_value(true)
              .help("stroke color for all lines (default: 'black')"))
-        .arg(Arg::with_name("scale")
+        .arg(Arg::new("scale")
              .long("scale")
-             .takes_value(true)
              .help("scale the entire svg (dimensions, font size, stroke width) by this factor (default: 1)"))
-        .subcommand(SubCommand::with_name("build")
+        .subcommand(Command::new("build")
             .about("Batch convert files to svg.")
             .version("0.0.1")
-            .arg(Arg::with_name("input")
-                .short("i")
+            .arg(Arg::new("input")
+                .short('i')
                 .long("input")
-                .takes_value(true)
                 .help("set input file pattern like: *.bob or dir/*.bob"))
-            .arg(Arg::with_name("outdir")
-                .short("o")
+            .arg(Arg::new("outdir")
+                .short('o')
                 .long("outdir")
-                .takes_value(true)
                 .help("set dir of svg files")))
         .get_matches();
 
@@ -80,9 +66,9 @@ fn main() {
 
     let mut bob = String::new();
 
-    if args.is_present("inline") {
-        bob = args.value_of("input").unwrap().replace("\\n", "\n");
-    } else if let Some(file) = args.value_of("input") {
+    if args.get_flag("inline") {
+        bob = args.get_one::<String>("input").map(String::as_str).unwrap().replace("\\n", "\n");
+    } else if let Some(file) = args.get_one::<String>("input").map(String::as_str) {
         match File::open(file) {
             Ok(mut f) => {
                 f.read_to_string(&mut bob).unwrap();
@@ -107,15 +93,15 @@ fn main() {
 
     let mut settings = Settings::default();
 
-    if let Some(background) = args.value_of("background") {
+    if let Some(background) = args.get_one::<String>("background").map(String::as_str) {
         settings.background = background.to_string();
     }
 
-    if let Some(fill_color) = args.value_of("fill-color") {
+    if let Some(fill_color) = args.get_one::<String>("fill-color").map(String::as_str) {
         settings.fill_color = fill_color.to_string();
     }
 
-    if let Some(font_family) = args.value_of("font-family") {
+    if let Some(font_family) = args.get_one::<String>("font-family").map(String::as_str) {
         settings.font_family = font_family.to_string();
     }
 
@@ -138,7 +124,7 @@ fn main() {
 
     let svg = svgbob::to_svg_with_settings(&*bob, &settings);
 
-    if let Some(file) = args.value_of("output") {
+    if let Some(file) = args.get_one::<String>("output").map(String::as_str) {
         if let Err(e) = fs::write(file, &svg) {
             use std::io::Write;
 
@@ -160,7 +146,7 @@ fn parse_value_of<T: FromStr>(args: &ArgMatches, arg_name: &str) -> Option<T>
 where
     <T as std::str::FromStr>::Err: std::fmt::Display,
 {
-    return args.value_of(arg_name).map(|arg| match arg.parse::<T>() {
+    return args.get_one::<String>(arg_name).map(|arg| match arg.parse::<T>() {
         Ok(a) => a,
         Err(e) => {
             use std::io::Write;
@@ -180,8 +166,8 @@ where
 // Batch convert files to svg
 // use svgbob build -i inputdir/*.bob -o outdir/
 fn build(args: &ArgMatches) -> Result<(), Box<dyn Error>> {
-    let files_pattern = args.value_of("input").unwrap_or("*.bob");
-    let outdir = args.value_of("outdir").unwrap_or("");
+    let files_pattern = args.get_one::<String>("input").map(String::as_str).unwrap_or("*.bob");
+    let outdir = args.get_one::<String>("outdir").map(String::as_str).unwrap_or("");
     let input_path = Path::new(files_pattern);
     let ext = input_path
         .extension()
