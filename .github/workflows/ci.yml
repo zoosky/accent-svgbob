@@ -5,6 +5,10 @@ on:
     branches: [master]
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -26,22 +30,22 @@ jobs:
         run: cargo test --workspace
 
   msrv:
-    name: MSRV check (1.87)
+    name: MSRV check (1.90)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@master
         with:
-          toolchain: "1.87"
+          toolchain: "1.90"
       - uses: Swatinem/rust-cache@v2
       - name: Check on the declared rust-version
-        run: cargo check --workspace
+        run: cargo check --workspace --all-targets
 
   deny:
-    name: cargo-deny advisories
+    name: cargo-deny advisories and licenses
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: EmbarkStudios/cargo-deny-action@v2
         with:
-          command: check advisories
+          command: check advisories licenses

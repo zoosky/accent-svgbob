@@ -65,9 +65,9 @@ impl FragmentBuffer {
     pub fn dump(&self) -> String {
         let mut buff = String::new();
         for (cell, shapes) in self.iter() {
-            write!(buff, "\ncell: {} ", cell);
+            let _ = write!(buff, "\ncell: {} ", cell);
             for shape in shapes {
-                write!(buff, "\n    {}", shape.fragment);
+                let _ = write!(buff, "\n    {}", shape.fragment);
             }
         }
         buff

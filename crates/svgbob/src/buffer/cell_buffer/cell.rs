@@ -2,7 +2,7 @@ use crate::{util, Point};
 use parry2d::{
     bounding_volume::Aabb,
     math::Isometry,
-    query::{intersection_test, PointQuery},
+    query::intersection_test,
     shape::{Polyline, Segment},
 };
 use std::{

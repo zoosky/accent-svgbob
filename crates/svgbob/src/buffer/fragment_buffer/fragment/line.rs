@@ -1,14 +1,9 @@
 use crate::{
-    buffer::{fragment_buffer::fragment::polygon::Polygon, Cell, Fragment},
-    fragment::{marker_line, Bounds, Circle, Marker, MarkerLine},
+    buffer::{Cell, Fragment},
+    fragment::{marker_line, Bounds, Circle, Marker},
     util, Direction, Point,
 };
-use parry2d::{
-    bounding_volume::Aabb,
-    math::Isometry,
-    query::PointQuery,
-    shape::{Polyline, Segment, Shape},
-};
+use parry2d::{math::Isometry, query::PointQuery, shape::Segment};
 use std::{cmp::Ordering, fmt};
 
 use crate::{
@@ -445,9 +440,7 @@ impl PartialEq for Line {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::buffer::{
-        fragment_buffer::fragment::polygon::PolygonTag, CellGrid,
-    };
+    use crate::buffer::CellGrid;
 
     #[test]
     fn test_extend_line() {

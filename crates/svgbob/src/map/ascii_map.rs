@@ -1,3 +1,7 @@
+// The property maps bind every neighbor cell to a named variable
+// (top_left, bottom_right, ...) so each pattern reads like the picture it
+// matches, even when the pattern only uses a few of them.
+#![allow(unused_variables)]
 #![allow(clippy::type_complexity)]
 use crate::{
     buffer::{
@@ -60,8 +64,8 @@ pub static ASCII_PROPERTIES: LazyLock<BTreeMap<char, Property>> =
         let x = CellGrid::x();
         let y = CellGrid::y();
 
-        /// cellgrids that have no names
-        /// just name them with coordinate locations
+        // cellgrids that have no names
+        // just name them with coordinate locations
         let _01 = CellGrid::point(0, 1);
         let _11 = CellGrid::point(1, 1);
         let _21 = CellGrid::point(2, 1);
@@ -96,7 +100,7 @@ pub static ASCII_PROPERTIES: LazyLock<BTreeMap<char, Property>> =
         // in between 1 and 2
         let between1_2 = (unit1 + unit2) / 2.0; // 0.375
 
-        /// char, default static fragments, conditional fragments
+        // char, default static fragments, conditional fragments
         let map: Vec<(
             char,
             Vec<(Signal, Vec<Fragment>)>,

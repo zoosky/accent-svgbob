@@ -4,7 +4,7 @@ use crate::{
         fragment::{Arc, Circle, Rect},
         CellBuffer,
     },
-    Point,
+    Fragment, Point,
 };
 
 #[test]

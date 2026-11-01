@@ -1,7 +1,6 @@
 use crate::{
     buffer::fragment_buffer::FragmentSpan,
     vdom::{attributes::classes, Node},
-    Fragment,
 };
 
 /// A tree of fragments where a fragment can contain other fragments

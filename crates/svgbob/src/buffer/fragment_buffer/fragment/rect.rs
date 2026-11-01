@@ -8,7 +8,7 @@ use crate::{
     },
     Cell, Point,
 };
-use parry2d::shape::{ConvexPolygon, Polyline, Segment, Shape};
+use parry2d::shape::{ConvexPolygon, Polyline, Segment};
 use std::{cmp::Ordering, fmt};
 
 #[derive(Debug, Clone)]

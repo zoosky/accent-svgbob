@@ -370,7 +370,7 @@ pub mod attributes {
 #[cfg(test)]
 mod tests {
     use super::{
-        attributes::{class, classes, classes_flag, x},
+        attributes::{class, classes, x},
         elements::{circle, rect, style},
         *,
     };

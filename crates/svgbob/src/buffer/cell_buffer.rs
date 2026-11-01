@@ -1,7 +1,7 @@
 use crate::{
     buffer::{
         fragment_buffer::{FragmentSpan, FragmentTree},
-        Fragment, StringBuffer,
+        StringBuffer,
     },
     fragment::CellText,
     util::parser,

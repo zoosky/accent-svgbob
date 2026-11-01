@@ -5,9 +5,8 @@ use crate::{
         FragmentBuffer, Property, PropertyBuffer, StringBuffer,
     },
     fragment,
-    fragment::Circle,
     map::{circle_map, UNICODE_FRAGMENTS},
-    Cell, Fragment, Merge, Point, Settings,
+    Cell, Merge, Point,
 };
 use itertools::Itertools;
 use std::{
@@ -232,11 +231,11 @@ impl Span {
     /// is within the bounds of `bound1` and `bound2`
     pub fn is_bounded(&self, bound1: Cell, bound2: Cell) -> bool {
         self.iter()
-            .all(|(cell, ch)| cell.is_bounded(bound1, bound2))
+            .all(|(cell, _ch)| cell.is_bounded(bound1, bound2))
     }
 
     pub fn hit_cell(&self, needle: Cell) -> bool {
-        self.iter().any(|(cell, ch)| *cell == needle)
+        self.iter().any(|(cell, _ch)| *cell == needle)
     }
 
     /// merge as is without checking it it can

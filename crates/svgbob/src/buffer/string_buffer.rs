@@ -48,7 +48,7 @@ impl StringBuffer {
     pub fn add_char(&mut self, x: i32, y: i32, ch: char) {
         if x >= 0 && y >= 0 {
             if ch == '\0' {
-                println!("skipping {}", ch);
+                log::trace!("skipping a NUL placeholder cell");
             } else {
                 let row_index = y as usize;
                 let column_index = x as usize;

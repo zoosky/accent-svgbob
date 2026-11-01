@@ -9,7 +9,7 @@ use crate::{
     },
     Point,
 };
-use parry2d::shape::{Segment, Shape};
+use parry2d::shape::Segment;
 use std::{cmp::Ordering, fmt};
 
 /// TODO: Add an is_broken field when there is a presence of `~` or `!` in the span
@@ -31,7 +31,7 @@ impl Arc {
             start,
             end,
             radius,
-            /// always false, since arcs are mostly in minor arc
+            // always false, since arcs are mostly in minor arc
             major_flag: false,
             sweep_flag: false,
             rotation_flag: false,
@@ -72,7 +72,7 @@ impl Arc {
             start,
             end,
             radius,
-            /// always false, since arcs are mostly in minor arc
+            // always false, since arcs are mostly in minor arc
             major_flag: false,
             sweep_flag,
             rotation_flag: false,

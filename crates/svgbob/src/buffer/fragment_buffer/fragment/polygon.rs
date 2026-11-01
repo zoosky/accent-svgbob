@@ -8,7 +8,7 @@ use crate::{
     Cell, Direction, Point,
 };
 use nalgebra::Point2;
-use parry2d::shape::{shape::Shape, Polyline};
+use parry2d::shape::Polyline;
 use std::{cmp::Ordering, fmt};
 
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -224,7 +224,6 @@ mod tests {
     use crate::{
         buffer::{Cell, CellBuffer, Contacts, Span},
         fragment::CellText,
-        Settings,
     };
 
     #[test]

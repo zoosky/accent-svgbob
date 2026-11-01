@@ -1,8 +1,8 @@
 #![deny(warnings)]
-// The unicode property maps bind every neighbor cell to a named variable
-// (top_left, bottom_right, ...) for readability even where a pattern only
-// uses a few of them, so a blanket unused allow is deliberate here.
-#![allow(unused)]
+// Upstream-inherited API surface (helper methods, circle-map tables) is
+// retained even where nothing calls it yet, to keep the diff against
+// ivanceras/svgbob reviewable; parts of it are exercised only by tests.
+#![allow(dead_code)]
 #![deny(clippy::all)]
 
 pub mod buffer;

@@ -1,8 +1,11 @@
+// The property maps bind every neighbor cell to a named variable
+// (top_left, bottom_right, ...) so each pattern reads like the picture it
+// matches, even when the pattern only uses a few of them.
+#![allow(unused_variables)]
 use crate::{
     buffer::{CellBuffer, Contacts, Span},
-    fragment,
     fragment::{Arc, Circle},
-    Cell, Point, Settings,
+    Cell, Point,
 };
 use indexmap::IndexMap;
 use std::{

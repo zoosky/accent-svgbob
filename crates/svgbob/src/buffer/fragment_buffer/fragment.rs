@@ -9,8 +9,8 @@ pub use marker_line::{Marker, MarkerLine};
 use parry2d::{
     bounding_volume::{Aabb, BoundingVolume},
     math::Isometry,
-    query::{intersection_test, PointQuery},
-    shape::{ConvexPolygon, Polyline, Segment, Shape},
+    query::intersection_test,
+    shape::{Polyline, Segment},
 };
 pub use polygon::{Polygon, PolygonTag};
 pub use rect::Rect;
@@ -140,12 +140,12 @@ impl Fragment {
             Fragment::Line(line) => match other {
                 Fragment::Line(other) => line.is_touching(other),
                 Fragment::Arc(other_arc) => line.is_touching_arc(other_arc),
-                Fragment::Polygon(polygon) => false,
+                Fragment::Polygon(_polygon) => false,
                 Fragment::Circle(circle) => line.is_touching_circle(circle),
                 _ => false,
             },
-            Fragment::Polygon(polygon) => match other {
-                Fragment::Line(other) => false,
+            Fragment::Polygon(_polygon) => match other {
+                Fragment::Line(_other) => false,
                 _ => false,
             },
             Fragment::Arc(arc) => match other {
@@ -401,22 +401,22 @@ impl Merge for Fragment {
             }
 
             // line and polygon
-            (Fragment::Line(line), Fragment::Polygon(polygon)) => {
+            (Fragment::Line(_line), Fragment::Polygon(_polygon)) => {
                 //line.merge_line_polygon(polygon)
                 None
             }
 
             // polygon and line
-            (Fragment::Polygon(polygon), Fragment::Line(line)) => {
+            (Fragment::Polygon(_polygon), Fragment::Line(_line)) => {
                 //line.merge_line_polygon(polygon)
                 None
             }
 
             // line and marker_line
-            (Fragment::Line(line), Fragment::MarkerLine(mline)) => None,
+            (Fragment::Line(_line), Fragment::MarkerLine(_mline)) => None,
             // marker_line and line
-            (Fragment::MarkerLine(mline), Fragment::Line(line)) => None,
-            (Fragment::MarkerLine(mline), Fragment::Polygon(polygon)) => {
+            (Fragment::MarkerLine(_mline), Fragment::Line(_line)) => None,
+            (Fragment::MarkerLine(_mline), Fragment::Polygon(_polygon)) => {
                 //mline.merge_polygon(polygon)
                 None
             }

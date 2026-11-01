@@ -1,8 +1,11 @@
+// The property maps bind every neighbor cell to a named variable
+// (top_left, bottom_right, ...) so each pattern reads like the picture it
+// matches, even when the pattern only uses a few of them.
+#![allow(unused_variables)]
 use crate::{
     buffer::{
         fragment::PolygonTag::{
-            ArrowBottom, ArrowBottomLeft, ArrowBottomRight, ArrowLeft,
-            ArrowRight, ArrowTop, ArrowTopLeft, ArrowTopRight, DiamondBullet,
+            ArrowBottom, ArrowLeft, ArrowRight, ArrowTop, DiamondBullet,
         },
         Cell, CellGrid,
     },
@@ -67,8 +70,8 @@ pub static UNICODE_FRAGMENTS: LazyLock<BTreeMap<char, Vec<Fragment>>> =
         let x = CellGrid::x();
         let y = CellGrid::y();
 
-        /// cellgrids that have no names
-        /// just name them with coordinate locations
+        // cellgrids that have no names
+        // just name them with coordinate locations
         let _01 = CellGrid::point(0, 1);
         let _11 = CellGrid::point(1, 1);
         let _21 = CellGrid::point(2, 1);
@@ -235,13 +238,13 @@ pub static UNICODE_FRAGMENTS: LazyLock<BTreeMap<char, Vec<Fragment>>> =
             ('┤', vec![line(c, w), line(k, m)]),
             ('┬', vec![line(k, o), line(m, w)]),
             ('┴', vec![line(k, o), line(c, m)]),
-            /// rounded top left
+            // rounded top left
             ('╭', vec![arc(o, r, unit2), line(r, w)]),
-            /// rounded top right
+            // rounded top right
             ('╮', vec![line(w, r), arc(r, k, unit2)]),
-            /// rounded bottom-left
+            // rounded bottom-left
             ('╰', vec![line(c, h), arc(h, o, unit2)]),
-            /// rounded bottom-right
+            // rounded bottom-right
             ('╯', vec![line(c, h), arc(k, h, unit2)]),
             // ◜
             ('◜', vec![arc(e, m, unit4), line(m, w)]),
