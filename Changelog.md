@@ -24,6 +24,10 @@
   replacement now sums per-char widths instead of taking the string-level
   width, keeping it aligned with the per-char cell grid now that the two
   can disagree (ZWJ and variation-selector sequences).
+- svgbob_cli: upgrade clap 2 -> 4. This drops the unmaintained atty
+  (RUSTSEC-2021-0145) and ansi_term (RUSTSEC-2021-0139) crates and the
+  duplicate unicode-width 0.1 that clap 2 pulled in. Flags and behavior
+  are unchanged.
 - Version 0.8.0: the re-exported `nalgebra` changed major version, which is
   a breaking change for any consumer that interoperates with svgbob's
   nalgebra or parry2d types. `rust-version = "1.87"` is now declared

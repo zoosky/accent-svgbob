@@ -13,7 +13,7 @@ rust-version = "1.87"
 
 [dependencies]
 svgbob = { path = "../svgbob", version = "0.8" }
-clap = "2.16"
+clap = "4.5"
 
 
 
