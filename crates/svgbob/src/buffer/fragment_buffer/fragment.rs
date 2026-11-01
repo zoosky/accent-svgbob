@@ -1,52 +1,21 @@
 use crate::{
-    buffer::Cell,
-    map::unicode_map::FRAGMENTS_UNICODE,
-    vdom::Node,
-    Merge,
-    Point,
+    buffer::Cell, map::unicode_map::FRAGMENTS_UNICODE, vdom::Node, Merge, Point,
 };
-pub use crate::{
-    Property,
-    Settings,
-    Signal,
-};
+pub use crate::{Property, Settings, Signal};
 pub use arc::Arc;
 pub use circle::Circle;
 pub use line::Line;
-pub use marker_line::{
-    Marker,
-    MarkerLine,
-};
+pub use marker_line::{Marker, MarkerLine};
 use parry2d::{
-    bounding_volume::{
-        Aabb,
-        BoundingVolume,
-    },
+    bounding_volume::{Aabb, BoundingVolume},
     math::Isometry,
-    query::{
-        intersection_test,
-        PointQuery,
-    },
-    shape::{
-        ConvexPolygon,
-        Polyline,
-        Segment,
-        Shape,
-    },
+    query::intersection_test,
+    shape::{Polyline, Segment},
 };
-pub use polygon::{
-    Polygon,
-    PolygonTag,
-};
+pub use polygon::{Polygon, PolygonTag};
 pub use rect::Rect;
-use std::{
-    cmp::Ordering,
-    fmt,
-};
-pub use text::{
-    CellText,
-    Text,
-};
+use std::{cmp::Ordering, fmt};
+pub use text::{CellText, Text};
 
 mod arc;
 mod circle;
@@ -168,44 +137,32 @@ impl Fragment {
     /// therefore can be in a group together
     pub(crate) fn is_contacting(&self, other: &Self) -> bool {
         match self {
-            Fragment::Line(line) => {
-                match other {
-                    Fragment::Line(other) => line.is_touching(other),
-                    Fragment::Arc(other_arc) => line.is_touching_arc(other_arc),
-                    Fragment::Polygon(polygon) => false,
-                    Fragment::Circle(circle) => line.is_touching_circle(circle),
-                    _ => false,
+            Fragment::Line(line) => match other {
+                Fragment::Line(other) => line.is_touching(other),
+                Fragment::Arc(other_arc) => line.is_touching_arc(other_arc),
+                Fragment::Polygon(_polygon) => false,
+                Fragment::Circle(circle) => line.is_touching_circle(circle),
+                _ => false,
+            },
+            Fragment::Polygon(_polygon) => match other {
+                Fragment::Line(_other) => false,
+                _ => false,
+            },
+            Fragment::Arc(arc) => match other {
+                Fragment::Arc(other_arc) => arc.is_touching(other_arc),
+                Fragment::Line(other_line) => other_line.is_touching_arc(arc),
+                _ => false,
+            },
+            Fragment::Circle(circle) => match other {
+                Fragment::Line(other) => other.is_touching_circle(circle),
+                _ => false,
+            },
+            Fragment::CellText(ctext) => match other {
+                Fragment::CellText(other_ctext) => {
+                    ctext.is_contacting(other_ctext)
                 }
-            }
-            Fragment::Polygon(polygon) => {
-                match other {
-                    Fragment::Line(other) => false,
-                    _ => false,
-                }
-            }
-            Fragment::Arc(arc) => {
-                match other {
-                    Fragment::Arc(other_arc) => arc.is_touching(other_arc),
-                    Fragment::Line(other_line) => {
-                        other_line.is_touching_arc(arc)
-                    }
-                    _ => false,
-                }
-            }
-            Fragment::Circle(circle) => {
-                match other {
-                    Fragment::Line(other) => other.is_touching_circle(circle),
-                    _ => false,
-                }
-            }
-            Fragment::CellText(ctext) => {
-                match other {
-                    Fragment::CellText(other_ctext) => {
-                        ctext.is_contacting(other_ctext)
-                    }
-                    _ => false,
-                }
-            }
+                _ => false,
+            },
             _ => false,
         }
     }
@@ -395,11 +352,7 @@ impl Fragment {
             };
 
         if let Some(input_text) = input_text {
-            if let Ok(tags) = crate::util::parser::parse_css_tag(input_text) {
-                tags
-            } else {
-                vec![]
-            }
+            crate::util::parser::parse_css_tag(input_text).unwrap_or_default()
         } else {
             vec![]
         }
@@ -448,22 +401,22 @@ impl Merge for Fragment {
             }
 
             // line and polygon
-            (Fragment::Line(line), Fragment::Polygon(polygon)) => {
+            (Fragment::Line(_line), Fragment::Polygon(_polygon)) => {
                 //line.merge_line_polygon(polygon)
                 None
             }
 
             // polygon and line
-            (Fragment::Polygon(polygon), Fragment::Line(line)) => {
+            (Fragment::Polygon(_polygon), Fragment::Line(_line)) => {
                 //line.merge_line_polygon(polygon)
                 None
             }
 
             // line and marker_line
-            (Fragment::Line(line), Fragment::MarkerLine(mline)) => None,
+            (Fragment::Line(_line), Fragment::MarkerLine(_mline)) => None,
             // marker_line and line
-            (Fragment::MarkerLine(mline), Fragment::Line(line)) => None,
-            (Fragment::MarkerLine(mline), Fragment::Polygon(polygon)) => {
+            (Fragment::MarkerLine(_mline), Fragment::Line(_line)) => None,
+            (Fragment::MarkerLine(_mline), Fragment::Polygon(_polygon)) => {
                 //mline.merge_polygon(polygon)
                 None
             }
@@ -667,12 +620,11 @@ impl Ord for Fragment {
             (Fragment::CellText(ctext), Fragment::CellText(other)) => {
                 ctext.cmp(other)
             }
-            _ => {
-                self.mins()
-                    .cmp(&other.mins())
-                    .then(self.maxs().cmp(&other.maxs()))
-                    .then(self.rank().cmp(&other.rank()))
-            }
+            _ => self
+                .mins()
+                .cmp(&other.mins())
+                .then(self.maxs().cmp(&other.maxs()))
+                .then(self.rank().cmp(&other.rank())),
         }
     }
 }

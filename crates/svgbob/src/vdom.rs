@@ -10,10 +10,7 @@
 //! Text is written as-is: callers escape where escaping is needed, exactly
 //! as they did under sauron.
 
-use std::{
-    fmt,
-    marker::PhantomData,
-};
+use std::{fmt, marker::PhantomData};
 
 const INDENT: usize = 2;
 
@@ -237,11 +234,7 @@ fn render_attributes(
 
 /// Element constructors for the tags svgbob draws with.
 pub mod elements {
-    use super::{
-        element,
-        Attribute,
-        Node,
-    };
+    use super::{element, Attribute, Node};
 
     macro_rules! declare_elements {
         ($($(#[$doc:meta])* $name:ident => $tag:literal;)*) => {
@@ -367,7 +360,8 @@ pub mod attributes {
             "class",
             pairs
                 .into_iter()
-                .filter_map(|(name, flag)| flag.then(|| name.to_string()))
+                .filter(|(_, flag)| *flag)
+                .map(|(name, _)| name.to_string())
                 .collect(),
         )
     }
@@ -376,17 +370,8 @@ pub mod attributes {
 #[cfg(test)]
 mod tests {
     use super::{
-        attributes::{
-            class,
-            classes,
-            classes_flag,
-            x,
-        },
-        elements::{
-            circle,
-            rect,
-            style,
-        },
+        attributes::{class, classes, x},
+        elements::{circle, rect, style},
         *,
     };
 

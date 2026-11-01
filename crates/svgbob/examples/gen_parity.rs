@@ -23,10 +23,12 @@ fn main() {
             svgbob::to_svg_string_compressed(&ascii),
         )
         .unwrap();
-        let mut settings = svgbob::Settings::default();
-        settings.include_backdrop = false;
-        settings.include_styles = false;
-        settings.include_defs = false;
+        let settings = svgbob::Settings {
+            include_backdrop: false,
+            include_styles: false,
+            include_defs: false,
+            ..Default::default()
+        };
         fs::write(
             out.join(format!("{stem}.bare.svg")),
             svgbob::to_svg_with_settings(&ascii, &settings),

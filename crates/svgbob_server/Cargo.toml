@@ -8,7 +8,7 @@ documentation = "https://docs.rs/svgbob"
 keywords = ["ascii", "svg", "convert", "bob"]
 license = "Apache-2.0"
 edition = "2021"
-rust-version = "1.87"
+rust-version = "1.90"
 
 
 [dependencies]

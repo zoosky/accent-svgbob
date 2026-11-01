@@ -1,4 +1,4 @@
-use crate::{buffer::Span, Cell, Fragment, Merge, Settings};
+use crate::{buffer::Span, Cell, Fragment, Merge};
 use std::{cmp::Ordering, fmt};
 
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -2,7 +2,7 @@ use crate::{util, Point};
 use parry2d::{
     bounding_volume::Aabb,
     math::Isometry,
-    query::{intersection_test, PointQuery},
+    query::intersection_test,
     shape::{Polyline, Segment},
 };
 use std::{
@@ -28,7 +28,7 @@ pub use cell_grid::CellGrid;
 ///     7├─┼─┼─┼─┤         │ │ │ │ │
 ///     8└─┴─┴─┴─┘        U└─┴─┴─┴─┘Y
 /// ```                      V W X
-
+///
 /// A single element in the terminal that
 /// can fit 1 character.
 /// Describe the exact location of a point/subcell in a grid.

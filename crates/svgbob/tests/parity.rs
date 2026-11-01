@@ -6,10 +6,7 @@
 //! must match byte for byte. Regenerate deliberately with
 //! `cargo run -p svgbob --example gen_parity` and review the diff.
 
-use std::{
-    fs,
-    path::Path,
-};
+use std::{fs, path::Path};
 
 fn fixtures() -> Vec<(String, String)> {
     let data = Path::new(env!("CARGO_MANIFEST_DIR")).join("test_data");
@@ -64,10 +61,12 @@ fn compressed_output_matches_sauron_golden() {
 #[test]
 fn bare_output_matches_sauron_golden() {
     for (stem, ascii) in fixtures() {
-        let mut settings = svgbob::Settings::default();
-        settings.include_backdrop = false;
-        settings.include_styles = false;
-        settings.include_defs = false;
+        let settings = svgbob::Settings {
+            include_backdrop: false,
+            include_styles: false,
+            include_defs: false,
+            ..Default::default()
+        };
         let rendered = svgbob::to_svg_with_settings(&ascii, &settings);
         assert_eq!(
             rendered,

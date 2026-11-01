@@ -3,23 +3,14 @@ use crate::{
     fragment::Bounds,
     util,
     vdom::{
-        attributes::{
-            class,
-            d,
-        },
+        attributes::{class, d},
         elements::path,
         Node,
     },
     Point,
 };
-use parry2d::shape::{
-    Segment,
-    Shape,
-};
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use parry2d::shape::Segment;
+use std::{cmp::Ordering, fmt};
 
 /// TODO: Add an is_broken field when there is a presence of `~` or `!` in the span
 #[derive(Debug, Clone)]
@@ -40,7 +31,7 @@ impl Arc {
             start,
             end,
             radius,
-            /// always false, since arcs are mostly in minor arc
+            // always false, since arcs are mostly in minor arc
             major_flag: false,
             sweep_flag: false,
             rotation_flag: false,
@@ -81,7 +72,7 @@ impl Arc {
             start,
             end,
             radius,
-            /// always false, since arcs are mostly in minor arc
+            // always false, since arcs are mostly in minor arc
             major_flag: false,
             sweep_flag,
             rotation_flag: false,

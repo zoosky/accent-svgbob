@@ -1,14 +1,17 @@
+// The property maps bind every neighbor cell to a named variable
+// (top_left, bottom_right, ...) so each pattern reads like the picture it
+// matches, even when the pattern only uses a few of them.
+#![allow(unused_variables)]
 use crate::{
     buffer::{CellBuffer, Contacts, Span},
-    fragment,
     fragment::{Arc, Circle},
-    Cell, Point, Settings,
+    Cell, Point,
 };
 use indexmap::IndexMap;
-use std::sync::LazyLock;
 use std::{
     collections::{BTreeMap, HashMap},
     iter::FromIterator,
+    sync::LazyLock,
 };
 
 /// skip the first 3 circles for constructing our arcs, otherwise it will just be a mess
@@ -38,225 +41,228 @@ pub const CIRCLES_TO_SKIP_FOR_ARC: usize = 3;
 /// f32 - how many cell from the top most to the center.y of the circle,
 /// Cell - center cell in arc2
 /// )
-static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>> =
-    LazyLock::new(|| {
-        vec![
-            // CIRCLE_0
-            //center 1,0,k, radius = 0.5
-            // 2 cell width , radius formula: (n-1)/2 = (2-1)/2 = 0.5
-            // where n is the number of cells used
-            //  if edge_case starts at edge then n is added by 1.
-            //  vert_mid: half (0.5/1.0)
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //  edge_case: start_half = 0.5, start_edge = 0.0
-            //  if radius +  edge_case has 0.5 then mid, 0.0 then edge
-            //
-            //
-            (
-                r#"
+/// One circle-art entry: (art, edge case, offset from the left most cell to
+/// center.x, offset from the top most cell to center.y, center cell in arc2).
+type CircleArtEntry = (&'static str, Horizontal, f32, f32, Cell);
+
+static CIRCLE_ART_MAP: LazyLock<Vec<CircleArtEntry>> = LazyLock::new(|| {
+    vec![
+        // CIRCLE_0
+        //center 1,0,k, radius = 0.5
+        // 2 cell width , radius formula: (n-1)/2 = (2-1)/2 = 0.5
+        // where n is the number of cells used
+        //  if edge_case starts at edge then n is added by 1.
+        //  vert_mid: half (0.5/1.0)
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //  edge_case: start_half = 0.5, start_edge = 0.0
+        //  if radius +  edge_case has 0.5 then mid, 0.0 then edge
+        //
+        //
+        (
+            r#"
             ()
             "#,
-                Horizontal::Half,
-                1.0,
-                0.5,
-                Cell::new(0, 0),
-            ),
-            // CIRCLE_1
-            //center = 1,1,m radius = 1.0
-            // 3 cell width, (n-1)/2 = (3-1)/2  = 1.0
-            // vert_mid: half  (0.5/1.0)
-            // cx_lies: mid
-            // cy_lies: mid
-            (
-                r#"
+            Horizontal::Half,
+            1.0,
+            0.5,
+            Cell::new(0, 0),
+        ),
+        // CIRCLE_1
+        //center = 1,1,m radius = 1.0
+        // 3 cell width, (n-1)/2 = (3-1)/2  = 1.0
+        // vert_mid: half  (0.5/1.0)
+        // cx_lies: mid
+        // cy_lies: mid
+        (
+            r#"
             (_)
             "#,
-                Horizontal::Half,
-                1.5,
-                0.5,
-                Cell::new(1, 0),
-            ),
-            // CIRCLE_2
-            //center = 1,1,o radius = 1.5,
-            // 4 cell width, (n-1)/2 = (4-1)/2 = 1.5
-            // vert_mid: 3/4 (1.5/2.0)
-            // cx_lies: edge
-            // cy_lies: mid
-            (
-                r#"
+            Horizontal::Half,
+            1.5,
+            0.5,
+            Cell::new(1, 0),
+        ),
+        // CIRCLE_2
+        //center = 1,1,o radius = 1.5,
+        // 4 cell width, (n-1)/2 = (4-1)/2 = 1.5
+        // vert_mid: 3/4 (1.5/2.0)
+        // cx_lies: edge
+        // cy_lies: mid
+        (
+            r#"
              __
             (__)
             "#,
-                Horizontal::Half,
-                2.0,
-                1.5,
-                Cell::new(1, 1),
-            ),
-            // CIRCLE_3
-            //center: 2,1,m radius: 2.0
-            //  5 cell width, (n-1)/2 = (5-1)/2 = 2.0
-            //  vert_mid: half (1.5/3.0)
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x,  if starts at half and offset_center_x * 2.0 is odd
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            2.0,
+            1.5,
+            Cell::new(1, 1),
+        ),
+        // CIRCLE_3
+        //center: 2,1,m radius: 2.0
+        //  5 cell width, (n-1)/2 = (5-1)/2 = 2.0
+        //  vert_mid: half (1.5/3.0)
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x,  if starts at half and offset_center_x * 2.0 is odd
+        // shared y
+        (
+            r#"
              ,-.
             (   )
              `-'
             "#,
-                Horizontal::Half,
-                2.5,
-                1.5,
-                Cell::new(2, 1),
-            ),
-            // CIRCLE_4
-            //center: 2,1,o radius: 2.5
-            // 6 cell width, (n-1)/2 = (6-1)/2 = 2.5
-            // vert_mid: half (1.5/3.0)
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //   no shared x, offset_center_x * 2.0 is even
-            //   shared y
-            (
-                r#"
+            Horizontal::Half,
+            2.5,
+            1.5,
+            Cell::new(2, 1),
+        ),
+        // CIRCLE_4
+        //center: 2,1,o radius: 2.5
+        // 6 cell width, (n-1)/2 = (6-1)/2 = 2.5
+        // vert_mid: half (1.5/3.0)
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //   no shared x, offset_center_x * 2.0 is even
+        //   shared y
+        (
+            r#"
              .--.
             (    )
              `--'
             "#,
-                Horizontal::Half,
-                3.0,
-                1.5,
-                Cell::new(2, 1),
-            ),
-            // CIRCLE_5
-            //center: 3,2,m radius: 3.0
-            // 7 cell width, (n-1)/2 = (7-1)/2 = 3.0
-            // vert_mid: 2.5/4
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            3.0,
+            1.5,
+            Cell::new(2, 1),
+        ),
+        // CIRCLE_5
+        //center: 3,2,m radius: 3.0
+        // 7 cell width, (n-1)/2 = (7-1)/2 = 3.0
+        // vert_mid: 2.5/4
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                _
              .' '.
             (     )
              `._.'
             "#,
-                Horizontal::Half,
-                3.5,
-                2.5,
-                Cell::new(3, 2),
-            ),
-            // CIRCLE_6
-            //center: 3,2,o radius: 3.5
-            // 8 cell width, (n-1)/2 = (8-1)/2 = 3.5
-            // vert_mid: 2.5/4
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //  no shared x
-            //  shared y
-            (
-                r#"
+            Horizontal::Half,
+            3.5,
+            2.5,
+            Cell::new(3, 2),
+        ),
+        // CIRCLE_6
+        //center: 3,2,o radius: 3.5
+        // 8 cell width, (n-1)/2 = (8-1)/2 = 3.5
+        // vert_mid: 2.5/4
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //  no shared x
+        //  shared y
+        (
+            r#"
                __
              ,'  '.
             (      )
              `.__.'
             "#,
-                Horizontal::Half,
-                4.0,
-                2.5,
-                Cell::new(3, 2),
-            ),
-            // CIRCLE_7
-            //center: 4,2,m radius:4.0
-            // 9 cell width, (n-1)/2 = (9-1)/2 = 4.0
-            // vert_mid: half (2.5/5.0)
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            4.0,
+            2.5,
+            Cell::new(3, 2),
+        ),
+        // CIRCLE_7
+        //center: 4,2,m radius:4.0
+        // 9 cell width, (n-1)/2 = (9-1)/2 = 4.0
+        // vert_mid: half (2.5/5.0)
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                ___
              ,'   '.
             (       )
              `.   .'
                `-'
             "#,
-                Horizontal::Half,
-                4.5,
-                2.5,
-                Cell::new(4, 2),
-            ),
-            // circle 8 and up can be divided into 4 quadrants these quadrants can be arcs and can be used as
-            // rounded edge with larger radius for rouded rect
-            // CIRCLE_8
-            //center: 4,2,w radius: 4.5
-            // start_edge: true
-            // 9 cell width, (n-0)/2 = (9-0)/2 = 4.5
-            // vert_mid:  3.0/5.0
-            //  cx_lies: mid
-            //  cy_lies: edge
-            //
-            //  shared x
-            //  no shared y
-            (
-                r#"
+            Horizontal::Half,
+            4.5,
+            2.5,
+            Cell::new(4, 2),
+        ),
+        // circle 8 and up can be divided into 4 quadrants these quadrants can be arcs and can be used as
+        // rounded edge with larger radius for rouded rect
+        // CIRCLE_8
+        //center: 4,2,w radius: 4.5
+        // start_edge: true
+        // 9 cell width, (n-0)/2 = (9-0)/2 = 4.5
+        // vert_mid:  3.0/5.0
+        //  cx_lies: mid
+        //  cy_lies: edge
+        //
+        //  shared x
+        //  no shared y
+        (
+            r#"
                ___
              ,'   `.
             /       \
             \       /
              `.___.'
             "#,
-                Horizontal::LeftEdge,
-                4.5,
-                3.0,
-                Cell::new(4, 2),
-            ),
-            // CIRCLE_9
-            //center: 4,2,y radius: 5.0
-            //start_edge: true
-            // 10 cell width, (n-0)/2 = (10-0)/2 = 5.0
-            // vert_mid:  3.0/5.0
-            //  cx_lies: edge
-            //  cy_lies: edge
-            //
-            //  no shared x, if offset_center_x * 2.0 is even
-            //  no shared y, if the offset_center_y * 2.0 is even
-            (
-                r#"
+            Horizontal::LeftEdge,
+            4.5,
+            3.0,
+            Cell::new(4, 2),
+        ),
+        // CIRCLE_9
+        //center: 4,2,y radius: 5.0
+        //start_edge: true
+        // 10 cell width, (n-0)/2 = (10-0)/2 = 5.0
+        // vert_mid:  3.0/5.0
+        //  cx_lies: edge
+        //  cy_lies: edge
+        //
+        //  no shared x, if offset_center_x * 2.0 is even
+        //  no shared y, if the offset_center_y * 2.0 is even
+        (
+            r#"
                ____
              ,'    `.
             /        \
             \        /
              `.____.'
             "#,
-                Horizontal::LeftEdge,
-                5.0,
-                3.0,
-                Cell::new(4, 2),
-            ),
-            // CIRCLE_10
-            //center:5,3,o radius: 5.5
-            // 12 cell width, (n-1)/2 = (12-1)/2 = 5.5
-            // vert_mid:  3.5/6.0
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //  no shared x
-            //  shared y
-            (
-                r#"
+            Horizontal::LeftEdge,
+            5.0,
+            3.0,
+            Cell::new(4, 2),
+        ),
+        // CIRCLE_10
+        //center:5,3,o radius: 5.5
+        // 12 cell width, (n-1)/2 = (12-1)/2 = 5.5
+        // vert_mid:  3.5/6.0
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //  no shared x
+        //  shared y
+        (
+            r#"
                 ____
               .'    `.
              /        \
@@ -264,22 +270,22 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
              \        /
               `.____.'
             "#,
-                Horizontal::Half,
-                6.0,
-                3.5,
-                Cell::new(5, 3),
-            ),
-            // CIRCLE_11
-            //center:6,3,m radius: 6.0
-            // 13 cell width, (n-1)/2 = (13-1)/2 = 6.0
-            // vert_mid: 3.5/6.0
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            6.0,
+            3.5,
+            Cell::new(5, 3),
+        ),
+        // CIRCLE_11
+        //center:6,3,m radius: 6.0
+        // 13 cell width, (n-1)/2 = (13-1)/2 = 6.0
+        // vert_mid: 3.5/6.0
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                 _____
               ,'     `.
              /         \
@@ -287,21 +293,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
              \         /
               `._____.'
             "#,
-                Horizontal::Half,
-                6.5,
-                3.5,
-                Cell::new(6, 3),
-            ),
-            // CIRCLE_12
-            // center: 6,3,y radius: 6.5
-            // vert_mid: 4.0/7.0
-            //  cx_lies: edge
-            //  cy_lies: edge
-            //
-            //  no shared x
-            //  no shared y
-            (
-                r#"
+            Horizontal::Half,
+            6.5,
+            3.5,
+            Cell::new(6, 3),
+        ),
+        // CIRCLE_12
+        // center: 6,3,y radius: 6.5
+        // vert_mid: 4.0/7.0
+        //  cx_lies: edge
+        //  cy_lies: edge
+        //
+        //  no shared x
+        //  no shared y
+        (
+            r#"
                 ______
               ,'      `.
              /          \
@@ -310,21 +316,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
              \          /
               `.______.'
             "#,
-                Horizontal::Half,
-                7.0,
-                4.0,
-                Cell::new(6, 3),
-            ),
-            // CIRCLE_13
-            //center: 7,3,w radius: 7.0
-            //vert_mid: 4.0/7.0
-            //  cx_lies: mid
-            //  cy_lies: edge
-            //
-            //  shared x
-            //  no shared y
-            (
-                r#"
+            Horizontal::Half,
+            7.0,
+            4.0,
+            Cell::new(6, 3),
+        ),
+        // CIRCLE_13
+        //center: 7,3,w radius: 7.0
+        //vert_mid: 4.0/7.0
+        //  cx_lies: mid
+        //  cy_lies: edge
+        //
+        //  shared x
+        //  no shared y
+        (
+            r#"
                 _______
               ,'       `.
              /           \
@@ -333,21 +339,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
              \           /
               `._______.'
             "#,
-                Horizontal::Half,
-                7.5,
-                4.0,
-                Cell::new(7, 3),
-            ),
-            // CIRCLE_14
-            //center: 7,4,o radius: 7.5
-            //vert_mid: 4.5/8.0
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //  no shared x
-            //  shared y
-            (
-                r#"
+            Horizontal::Half,
+            7.5,
+            4.0,
+            Cell::new(7, 3),
+        ),
+        // CIRCLE_14
+        //center: 7,4,o radius: 7.5
+        //vert_mid: 4.5/8.0
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //  no shared x
+        //  shared y
+        (
+            r#"
                 ________
               ,'        `.
              /            \
@@ -357,21 +363,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
              \            /
               `.________.'
             "#,
-                Horizontal::Half,
-                8.0,
-                4.5,
-                Cell::new(7, 4),
-            ),
-            // CIRCLE_15
-            //center: 8,4,m radius: 8.0
-            //vert_mid: 4.5/9.0
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            8.0,
+            4.5,
+            Cell::new(7, 4),
+        ),
+        // CIRCLE_15
+        //center: 8,4,m radius: 8.0
+        //vert_mid: 4.5/9.0
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                 __-----__
               ,'         `.
              /             \
@@ -382,21 +388,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `.         .'
                 `-------'
             "#,
-                Horizontal::Half,
-                8.5,
-                4.5,
-                Cell::new(8, 4),
-            ),
-            // CIRCLE_16
-            //center: 8,4,o radius: 8.5
-            // vert_mid:  4.5/9.0
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            //  no shared x
-            //  shared y
-            (
-                r#"
+            Horizontal::Half,
+            8.5,
+            4.5,
+            Cell::new(8, 4),
+        ),
+        // CIRCLE_16
+        //center: 8,4,o radius: 8.5
+        // vert_mid:  4.5/9.0
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        //  no shared x
+        //  shared y
+        (
+            r#"
                 .--------.
               ,'          `.
              /              \
@@ -407,21 +413,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `.          .'
                 `--------'
             "#,
-                Horizontal::Half,
-                9.0,
-                4.5,
-                Cell::new(8, 4),
-            ),
-            // CIRCLE_17
-            //center:9,5,m radius: 9.0
-            //vert_mid: 5.5/10.0
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            //  shared x
-            //  shared y
-            (
-                r#"
+            Horizontal::Half,
+            9.0,
+            4.5,
+            Cell::new(8, 4),
+        ),
+        // CIRCLE_17
+        //center:9,5,m radius: 9.0
+        //vert_mid: 5.5/10.0
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        //  shared x
+        //  shared y
+        (
+            r#"
                 _.-'''''-._
               ,'           `.
              /               \
@@ -433,22 +439,22 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `._         _.'
                  '-.....-'
             "#,
-                Horizontal::Half,
-                9.5,
-                5.5,
-                Cell::new(9, 5),
-            ),
-            // CIRCLE_18
-            // center: 9,5,o radius: 9.5
-            // vert_mid:  5.5/10.0
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            // no shared x
-            // shared y
-            //
-            (
-                r#"
+            Horizontal::Half,
+            9.5,
+            5.5,
+            Cell::new(9, 5),
+        ),
+        // CIRCLE_18
+        // center: 9,5,o radius: 9.5
+        // vert_mid:  5.5/10.0
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        // no shared x
+        // shared y
+        //
+        (
+            r#"
                 _.-''''''-._
               ,'            `.
              /                \
@@ -460,21 +466,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `._          _.'
                  '-......-'
             "#,
-                Horizontal::Half,
-                10.0,
-                5.5,
-                Cell::new(9, 5),
-            ),
-            // CIRCLE_19
-            // center: 10,5,m radius: 10
-            // vert_mid: 5.5/10.0
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            10.0,
+            5.5,
+            Cell::new(9, 5),
+        ),
+        // CIRCLE_19
+        // center: 10,5,m radius: 10
+        // vert_mid: 5.5/10.0
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                 _.-'''''''-._
               ,'             `.
              /                 \
@@ -486,21 +492,21 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `._           _.'
                  '-.......-'
             "#,
-                Horizontal::Half,
-                10.5,
-                5.5,
-                Cell::new(10, 5),
-            ),
-            // CIRCLE_20
-            // center: 10,5,o radius: 10.5
-            // vert_mid: 5.5/11.0
-            //  cx_lies: edge
-            //  cy_lies: mid
-            //
-            // no shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            10.5,
+            5.5,
+            Cell::new(10, 5),
+        ),
+        // CIRCLE_20
+        // center: 10,5,o radius: 10.5
+        // vert_mid: 5.5/11.0
+        //  cx_lies: edge
+        //  cy_lies: mid
+        //
+        // no shared x
+        // shared y
+        (
+            r#"
                 _.-''''''''-._
               ,'              `.
              /                  \
@@ -513,22 +519,22 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `._            _.'
                  '-........-'
             "#,
-                Horizontal::Half,
-                11.0,
-                5.5,
-                Cell::new(10, 5),
-            ),
-            // CIRCLE_21
-            // center: 10,5,m radius: 11
-            // radius = (n-1)/2 = (23-1)/2 = 11
-            // vert_mid: 5.5/11.0
-            // cx_lies: mid
-            // cy_lies: mid
-            //
-            // shared x
-            // shared y
-            (
-                r#"
+            Horizontal::Half,
+            11.0,
+            5.5,
+            Cell::new(10, 5),
+        ),
+        // CIRCLE_21
+        // center: 10,5,m radius: 11
+        // radius = (n-1)/2 = (23-1)/2 = 11
+        // vert_mid: 5.5/11.0
+        // cx_lies: mid
+        // cy_lies: mid
+        //
+        // shared x
+        // shared y
+        (
+            r#"
                 _.-'''''''''-._
               ,'               `.
              /                   \
@@ -541,13 +547,13 @@ static CIRCLE_ART_MAP: LazyLock<Vec<(&'static str, Horizontal, f32, f32, Cell)>>
               `._             _.'
                  '-.........-'
             "#,
-                Horizontal::Half,
-                11.5,
-                5.5,
-                Cell::new(11, 5),
-            ),
-        ]
-    });
+            Horizontal::Half,
+            11.5,
+            5.5,
+            Cell::new(11, 5),
+        ),
+    ]
+});
 
 #[derive(PartialEq, Eq, Debug, Clone, Copy)]
 /// edge cases of the circle art
@@ -643,7 +649,7 @@ static CIRCLE_MAP: LazyLock<Vec<CircleArt>> = LazyLock::new(|| {
             (art, edge_case, offset_center_x, offset_center_y, arc2_center),
         )| {
             CircleArt {
-                ascii_art: *art,
+                ascii_art: art,
                 start_edge: *edge_case,
                 offset_center_x: *offset_center_x,
                 offset_center_y: *offset_center_y,
@@ -654,21 +660,22 @@ static CIRCLE_MAP: LazyLock<Vec<CircleArt>> = LazyLock::new(|| {
 
 /// The fragments for each of the circle
 /// Calculate the span and get the group fragments
-static FRAGMENTS_CIRCLE: LazyLock<Vec<(Vec<Contacts>, Circle)>> = LazyLock::new(|| {
-    Vec::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
-        (
-            circle_art_to_group(circle_art.ascii_art),
-            Circle::new(circle_art.center(), circle_art.radius(), false),
-        )
-    }))
-});
+static FRAGMENTS_CIRCLE: LazyLock<Vec<(Vec<Contacts>, Circle)>> =
+    LazyLock::new(|| {
+        Vec::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
+            (
+                circle_art_to_group(circle_art.ascii_art),
+                Circle::new(circle_art.center(), circle_art.radius(), false),
+            )
+        }))
+    });
 
 /// map of circle spans and their radius
 pub static DIAMETER_CIRCLE: LazyLock<HashMap<i32, (Point, Span)>> =
     LazyLock::new(|| {
         HashMap::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
             let cb = CellBuffer::from(circle_art.ascii_art);
-            let mut spans= Vec::<Span>::from(&cb);
+            let mut spans = Vec::<Span>::from(&cb);
             assert_eq!(spans.len(), 1);
             let span = spans.remove(0).localize();
             (circle_art.diameter(), (circle_art.center(), span))
@@ -676,18 +683,19 @@ pub static DIAMETER_CIRCLE: LazyLock<HashMap<i32, (Point, Span)>> =
     });
 
 /// There is only 1 span per circle, and localized
-pub static CIRCLES_SPAN: LazyLock<IndexMap<Circle, Span>> = LazyLock::new(|| {
-    IndexMap::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
-        let cb = CellBuffer::from(circle_art.ascii_art);
-        let mut spans =  Vec::<Span>::from(&cb);
-        assert_eq!(spans.len(), 1);
-        let span = spans.remove(0).localize();
-        (
-            Circle::new(circle_art.center(), circle_art.radius(), false),
-            span,
-        )
-    }))
-});
+pub static CIRCLES_SPAN: LazyLock<IndexMap<Circle, Span>> =
+    LazyLock::new(|| {
+        IndexMap::from_iter(CIRCLE_MAP.iter().map(|circle_art| {
+            let cb = CellBuffer::from(circle_art.ascii_art);
+            let mut spans = Vec::<Span>::from(&cb);
+            assert_eq!(spans.len(), 1);
+            let span = spans.remove(0).localize();
+            (
+                Circle::new(circle_art.center(), circle_art.radius(), false),
+                span,
+            )
+        }))
+    });
 
 /// top_left      top       top_right
 ///               p2
@@ -700,181 +708,197 @@ pub static CIRCLES_SPAN: LazyLock<IndexMap<Circle, Span>> = LazyLock::new(|| {
 /// bottom_left  bottom   bottom_right
 ///
 /// (diameter, quarter arcs)
-pub static QUARTER_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> = LazyLock::new(|| {
-    BTreeMap::from_iter(CIRCLE_MAP.iter().skip(CIRCLES_TO_SKIP_FOR_ARC).map(
-        |circle_art| {
-            let span = circle_art_to_span(circle_art.ascii_art);
-            let bounds = span.cell_bounds().expect("must have bounds");
-            let top_left = bounds.top_left();
-            let bottom_right = bounds.bottom_right();
-            let top_right = bounds.top_right();
-            let bottom_left = bounds.bottom_left();
+pub static QUARTER_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> =
+    LazyLock::new(|| {
+        BTreeMap::from_iter(
+            CIRCLE_MAP
+                .iter()
+                .skip(CIRCLES_TO_SKIP_FOR_ARC)
+                .map(|circle_art| {
+                    let span = circle_art_to_span(circle_art.ascii_art);
+                    let bounds = span.cell_bounds().expect("must have bounds");
+                    let top_left = bounds.top_left();
+                    let bottom_right = bounds.bottom_right();
+                    let top_right = bounds.top_right();
+                    let bottom_left = bounds.bottom_left();
 
-            let center = circle_art.center();
-            let radius = circle_art.radius();
+                    let center = circle_art.center();
+                    let radius = circle_art.radius();
 
-            let p1 = Point::new(center.x + radius, center.y);
-            let p2 = Point::new(center.x, center.y - radius);
-            let p3 = Point::new(center.x - radius, center.y);
-            let p4 = Point::new(center.x, center.y + radius);
+                    let p1 = Point::new(center.x + radius, center.y);
+                    let p2 = Point::new(center.x, center.y - radius);
+                    let p3 = Point::new(center.x - radius, center.y);
+                    let p4 = Point::new(center.x, center.y + radius);
 
-            let arc2_center = circle_art.center_cell();
+                    let arc2_center = circle_art.center_cell();
 
-            let span1_center = Cell::new(
-                (center.x.floor() / Cell::width()) as i32,
-                arc2_center.y,
-            );
-            let span2_center = arc2_center;
-            let span3_center = Cell::new(
-                arc2_center.x,
-                (center.y.floor() / Cell::height()) as i32,
-            );
-            let span4_center = Cell::new(
-                (center.x.floor() / Cell::width()) as i32,
-                (center.y.floor() / Cell::height()) as i32,
-            );
+                    let span1_center = Cell::new(
+                        (center.x.floor() / Cell::width()) as i32,
+                        arc2_center.y,
+                    );
+                    let span2_center = arc2_center;
+                    let span3_center = Cell::new(
+                        arc2_center.x,
+                        (center.y.floor() / Cell::height()) as i32,
+                    );
+                    let span4_center = Cell::new(
+                        (center.x.floor() / Cell::width()) as i32,
+                        (center.y.floor() / Cell::height()) as i32,
+                    );
 
-            let bounds1 = Cell::rearrange_bound(span1_center, top_right);
-            let bounds2 = Cell::rearrange_bound(top_left, span2_center);
-            let bounds3 = Cell::rearrange_bound(bottom_left, span3_center);
-            let bounds4 = Cell::rearrange_bound(span4_center, bottom_right);
+                    let bounds1 =
+                        Cell::rearrange_bound(span1_center, top_right);
+                    let bounds2 = Cell::rearrange_bound(top_left, span2_center);
+                    let bounds3 =
+                        Cell::rearrange_bound(bottom_left, span3_center);
+                    let bounds4 =
+                        Cell::rearrange_bound(span4_center, bottom_right);
 
-            let span1 = span.extract(bounds1.0, bounds1.1).localize();
-            let span2 = span.extract(bounds2.0, bounds2.1).localize();
-            let span3 = span.extract(bounds3.0, bounds3.1).localize();
-            let span4 = span.extract(bounds4.0, bounds4.1).localize();
+                    let span1 = span.extract(bounds1.0, bounds1.1).localize();
+                    let span2 = span.extract(bounds2.0, bounds2.1).localize();
+                    let span3 = span.extract(bounds3.0, bounds3.1).localize();
+                    let span4 = span.extract(bounds4.0, bounds4.1).localize();
 
-            let arc1_start = bounds1.0.localize_point(p1);
-            let arc1_end = bounds1.0.localize_point(p2);
+                    let arc1_start = bounds1.0.localize_point(p1);
+                    let arc1_end = bounds1.0.localize_point(p2);
 
-            let arc2_start = bounds2.0.localize_point(p2);
-            let arc2_end = bounds2.0.localize_point(p3);
+                    let arc2_start = bounds2.0.localize_point(p2);
+                    let arc2_end = bounds2.0.localize_point(p3);
 
-            let arc3_start = bounds3.0.localize_point(p3);
-            let arc3_end = bounds3.0.localize_point(p4);
+                    let arc3_start = bounds3.0.localize_point(p3);
+                    let arc3_end = bounds3.0.localize_point(p4);
 
-            let arc4_start = bounds4.0.localize_point(p4);
-            let arc4_end = bounds4.0.localize_point(p1);
+                    let arc4_start = bounds4.0.localize_point(p4);
+                    let arc4_end = bounds4.0.localize_point(p1);
 
-            let arc1 = Arc::new(arc1_start, arc1_end, radius);
-            let arc2 = Arc::new(arc2_start, arc2_end, radius);
-            let arc3 = Arc::new(arc3_start, arc3_end, radius);
-            let arc4 = Arc::new(arc4_start, arc4_end, radius);
+                    let arc1 = Arc::new(arc1_start, arc1_end, radius);
+                    let arc2 = Arc::new(arc2_start, arc2_end, radius);
+                    let arc3 = Arc::new(arc3_start, arc3_end, radius);
+                    let arc4 = Arc::new(arc4_start, arc4_end, radius);
 
-            let diameter = circle_art.diameter();
-            (
-                diameter,
-                ArcSpans {
-                    diameter,
-                    arc_spans: vec![
-                        (arc1, span1),
-                        (arc2, span2),
-                        (arc3, span3),
-                        (arc4, span4),
-                    ],
-                },
-            )
-        },
-    ))
-});
+                    let diameter = circle_art.diameter();
+                    (
+                        diameter,
+                        ArcSpans {
+                            diameter,
+                            arc_spans: vec![
+                                (arc1, span1),
+                                (arc2, span2),
+                                (arc3, span3),
+                                (arc4, span4),
+                            ],
+                        },
+                    )
+                }),
+        )
+    });
 
-pub static HALF_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> = LazyLock::new(|| {
-    BTreeMap::from_iter(CIRCLE_MAP.iter().skip(CIRCLES_TO_SKIP_FOR_ARC).map(
-        |circle_art| {
-            let span = circle_art_to_span(circle_art.ascii_art);
-            let bounds = span.cell_bounds().expect("must have bounds");
+pub static HALF_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> =
+    LazyLock::new(|| {
+        BTreeMap::from_iter(
+            CIRCLE_MAP
+                .iter()
+                .skip(CIRCLES_TO_SKIP_FOR_ARC)
+                .map(|circle_art| {
+                    let span = circle_art_to_span(circle_art.ascii_art);
+                    let bounds = span.cell_bounds().expect("must have bounds");
 
-            let top_left = bounds.top_left();
-            let bottom_right = bounds.bottom_right();
-            let top_right = bounds.top_right();
-            let bottom_left = bounds.bottom_left();
+                    let top_left = bounds.top_left();
+                    let bottom_right = bounds.bottom_right();
+                    let top_right = bounds.top_right();
+                    let bottom_left = bounds.bottom_left();
 
-            assert_eq!(top_left.y, top_right.y);
-            assert_eq!(top_left.x, bottom_left.x);
-            assert_eq!(top_right.x, bottom_right.x);
-            assert_eq!(bottom_left.y, bottom_right.y);
+                    assert_eq!(top_left.y, top_right.y);
+                    assert_eq!(top_left.x, bottom_left.x);
+                    assert_eq!(top_right.x, bottom_right.x);
+                    assert_eq!(bottom_left.y, bottom_right.y);
 
-            let center_cell = circle_art.center_cell();
+                    let center_cell = circle_art.center_cell();
 
-            let center = circle_art.center();
-            let radius = circle_art.radius();
+                    let center = circle_art.center();
+                    let radius = circle_art.radius();
 
-            let p1 = Point::new(center.x + radius, center.y);
-            let p2 = Point::new(center.x, center.y - radius);
-            let p3 = Point::new(center.x - radius, center.y);
-            let p4 = Point::new(center.x, center.y + radius);
+                    let p1 = Point::new(center.x + radius, center.y);
+                    let p2 = Point::new(center.x, center.y - radius);
+                    let p3 = Point::new(center.x - radius, center.y);
+                    let p4 = Point::new(center.x, center.y + radius);
 
-            let arc2_center = center_cell;
+                    let arc2_center = center_cell;
 
-            let span1_center = Cell::new(
-                (center.x.floor() / Cell::width()) as i32,
-                arc2_center.y,
-            );
-            let span2_center = arc2_center;
-            let span3_center = Cell::new(
-                arc2_center.x,
-                (center.y.floor() / Cell::height()) as i32,
-            );
-            let span4_center = Cell::new(
-                (center.x.floor() / Cell::width()) as i32,
-                (center.y.floor() / Cell::height()) as i32,
-            );
+                    let span1_center = Cell::new(
+                        (center.x.floor() / Cell::width()) as i32,
+                        arc2_center.y,
+                    );
+                    let span2_center = arc2_center;
+                    let span3_center = Cell::new(
+                        arc2_center.x,
+                        (center.y.floor() / Cell::height()) as i32,
+                    );
+                    let span4_center = Cell::new(
+                        (center.x.floor() / Cell::width()) as i32,
+                        (center.y.floor() / Cell::height()) as i32,
+                    );
 
-            let top_tangent = Cell::new(top_right.x, span1_center.y);
-            let bottom_tangent = Cell::new(bottom_left.x, span3_center.y);
-            let left_tangent = Cell::new(span2_center.x, top_left.y);
-            let right_tangent = Cell::new(span1_center.x, top_right.y);
+                    let top_tangent = Cell::new(top_right.x, span1_center.y);
+                    let bottom_tangent =
+                        Cell::new(bottom_left.x, span3_center.y);
+                    let left_tangent = Cell::new(span2_center.x, top_left.y);
+                    let right_tangent = Cell::new(span1_center.x, top_right.y);
 
-            let bounds_top_half = Cell::rearrange_bound(top_left, top_tangent);
-            let bounds_bottom_half =
-                Cell::rearrange_bound(bottom_tangent, bottom_right);
-            let bounds_left_half =
-                Cell::rearrange_bound(left_tangent, bottom_left);
-            let bounds_right_half =
-                Cell::rearrange_bound(right_tangent, bottom_right);
+                    let bounds_top_half =
+                        Cell::rearrange_bound(top_left, top_tangent);
+                    let bounds_bottom_half =
+                        Cell::rearrange_bound(bottom_tangent, bottom_right);
+                    let bounds_left_half =
+                        Cell::rearrange_bound(left_tangent, bottom_left);
+                    let bounds_right_half =
+                        Cell::rearrange_bound(right_tangent, bottom_right);
 
-            let span_top_half = span
-                .extract(bounds_top_half.0, bounds_top_half.1)
-                .localize();
-            let span_bottom_half = span
-                .extract(bounds_bottom_half.0, bounds_bottom_half.1)
-                .localize();
-            let span_left_half = span
-                .extract(bounds_left_half.0, bounds_left_half.1)
-                .localize();
-            let span_right_half = span
-                .extract(bounds_right_half.0, bounds_right_half.1)
-                .localize();
+                    let span_top_half = span
+                        .extract(bounds_top_half.0, bounds_top_half.1)
+                        .localize();
+                    let span_bottom_half = span
+                        .extract(bounds_bottom_half.0, bounds_bottom_half.1)
+                        .localize();
+                    let span_left_half = span
+                        .extract(bounds_left_half.0, bounds_left_half.1)
+                        .localize();
+                    let span_right_half = span
+                        .extract(bounds_right_half.0, bounds_right_half.1)
+                        .localize();
 
-            let bottom_half_start = bounds_bottom_half.0.localize_point(p3);
-            let bottom_half_end = bounds_bottom_half.0.localize_point(p1);
+                    let bottom_half_start =
+                        bounds_bottom_half.0.localize_point(p3);
+                    let bottom_half_end =
+                        bounds_bottom_half.0.localize_point(p1);
 
-            let right_half_start = bounds_right_half.0.localize_point(p4);
-            let right_half_end = bounds_right_half.0.localize_point(p2);
+                    let right_half_start =
+                        bounds_right_half.0.localize_point(p4);
+                    let right_half_end = bounds_right_half.0.localize_point(p2);
 
-            let arc_top_half = Arc::new(p1, p3, radius);
-            let arc_bottom_half =
-                Arc::new(bottom_half_start, bottom_half_end, radius);
-            let arc_left_half = Arc::new(p2, p4, radius);
-            let arc_right_half =
-                Arc::new(right_half_start, right_half_end, radius);
+                    let arc_top_half = Arc::new(p1, p3, radius);
+                    let arc_bottom_half =
+                        Arc::new(bottom_half_start, bottom_half_end, radius);
+                    let arc_left_half = Arc::new(p2, p4, radius);
+                    let arc_right_half =
+                        Arc::new(right_half_start, right_half_end, radius);
 
-            let diameter = circle_art.diameter();
-            (
-                diameter,
-                ArcSpans {
-                    diameter,
-                    arc_spans: vec![
-                        (arc_top_half, span_top_half),
-                        (arc_bottom_half, span_bottom_half),
-                        (arc_left_half, span_left_half),
-                        (arc_right_half, span_right_half),
-                    ],
-                },
-            )
-        },
-    ))
-});
+                    let diameter = circle_art.diameter();
+                    (
+                        diameter,
+                        ArcSpans {
+                            diameter,
+                            arc_spans: vec![
+                                (arc_top_half, span_top_half),
+                                (arc_bottom_half, span_bottom_half),
+                                (arc_left_half, span_left_half),
+                                (arc_right_half, span_right_half),
+                            ],
+                        },
+                    )
+                }),
+        )
+    });
 
 pub static THREE_QUARTERS_ARC_SPAN: LazyLock<BTreeMap<i32, ArcSpans>> =
     LazyLock::new(|| {
@@ -992,24 +1016,25 @@ pub static FLATTENED_QUARTER_ARC_SPAN: LazyLock<
     ))
 });
 
-pub static FLATTENED_HALF_ARC_SPAN: LazyLock<BTreeMap<DiameterArc, (Arc, Span)>> =
-    LazyLock::new(|| {
-        BTreeMap::from_iter(HALF_ARC_SPAN.iter().flat_map(
-            |(diameter, arc_spans)| {
-                arc_spans.arc_spans.iter().enumerate().map(
-                    move |(arc_index, arc_span)| {
-                        (
-                            DiameterArc {
-                                diameter: *diameter,
-                                arc: arc_index,
-                            },
-                            arc_span.clone(),
-                        )
-                    },
-                )
-            },
-        ))
-    });
+pub static FLATTENED_HALF_ARC_SPAN: LazyLock<
+    BTreeMap<DiameterArc, (Arc, Span)>,
+> = LazyLock::new(|| {
+    BTreeMap::from_iter(HALF_ARC_SPAN.iter().flat_map(
+        |(diameter, arc_spans)| {
+            arc_spans.arc_spans.iter().enumerate().map(
+                move |(arc_index, arc_span)| {
+                    (
+                        DiameterArc {
+                            diameter: *diameter,
+                            arc: arc_index,
+                        },
+                        arc_span.clone(),
+                    )
+                },
+            )
+        },
+    ))
+});
 
 pub static FLATTENED_THREE_QUARTERS_ARC_SPAN: LazyLock<
     BTreeMap<DiameterArc, (Arc, Span)>,
@@ -1170,7 +1195,7 @@ fn is_subset_of<T: PartialEq>(
 ) -> (bool, Vec<usize>) {
     let mut unmatched = vec![];
     let mut matched = 0;
-    for (_i, set) in subset.iter().enumerate() {
+    for set in subset.iter() {
         if big_set.contains(set) {
             matched += 1;
         }

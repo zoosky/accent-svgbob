@@ -1,16 +1,6 @@
 use crate::{
-    fragment::{
-        marker_line,
-        Bounds,
-        Cell,
-        Fragment,
-        Line,
-        Polygon,
-    },
-    vdom::{
-        attributes::class,
-        Node,
-    },
+    fragment::{marker_line, Bounds, Cell, Fragment, Line, Polygon},
+    vdom::{attributes::class, Node},
     Point,
 };
 use std::fmt;

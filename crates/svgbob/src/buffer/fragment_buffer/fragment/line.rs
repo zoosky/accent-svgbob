@@ -1,47 +1,16 @@
 use crate::{
-    buffer::{
-        fragment_buffer::fragment::polygon::Polygon,
-        Cell,
-        Fragment,
-    },
-    fragment::{
-        marker_line,
-        Bounds,
-        Circle,
-        Marker,
-        MarkerLine,
-    },
-    util,
-    Direction,
-    Point,
+    buffer::{Cell, Fragment},
+    fragment::{marker_line, Bounds, Circle, Marker},
+    util, Direction, Point,
 };
-use parry2d::{
-    bounding_volume::Aabb,
-    math::Isometry,
-    query::PointQuery,
-    shape::{
-        Polyline,
-        Segment,
-        Shape,
-    },
-};
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use parry2d::{math::Isometry, query::PointQuery, shape::Segment};
+use std::{cmp::Ordering, fmt};
 
 use crate::{
     fragment::Arc,
     vdom::{
-        attributes::{
-            classes_flag,
-            x1,
-            x2,
-            y1,
-            y2,
-        },
-        elements,
-        Node,
+        attributes::{classes_flag, x1, x2, y1, y2},
+        elements, Node,
     },
 };
 
@@ -144,8 +113,7 @@ impl Line {
     }
 
     fn slope(&self) -> f32 {
-        (2.0 * self.end.y as f32 - 2.0 * self.start.y as f32)
-            / (self.end.x as f32 - self.start.x as f32)
+        (2.0 * self.end.y - 2.0 * self.start.y) / (self.end.x - self.start.x)
     }
 
     fn full_angle(&self) -> f32 {
@@ -472,10 +440,7 @@ impl PartialEq for Line {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::buffer::{
-        fragment_buffer::fragment::polygon::PolygonTag,
-        CellGrid,
-    };
+    use crate::buffer::CellGrid;
 
     #[test]
     fn test_extend_line() {

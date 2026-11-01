@@ -67,8 +67,14 @@ fn main() {
     let mut bob = String::new();
 
     if args.get_flag("inline") {
-        bob = args.get_one::<String>("input").map(String::as_str).unwrap().replace("\\n", "\n");
-    } else if let Some(file) = args.get_one::<String>("input").map(String::as_str) {
+        bob = args
+            .get_one::<String>("input")
+            .map(String::as_str)
+            .unwrap()
+            .replace("\\n", "\n");
+    } else if let Some(file) =
+        args.get_one::<String>("input").map(String::as_str)
+    {
         match File::open(file) {
             Ok(mut f) => {
                 f.read_to_string(&mut bob).unwrap();
@@ -93,15 +99,21 @@ fn main() {
 
     let mut settings = Settings::default();
 
-    if let Some(background) = args.get_one::<String>("background").map(String::as_str) {
+    if let Some(background) =
+        args.get_one::<String>("background").map(String::as_str)
+    {
         settings.background = background.to_string();
     }
 
-    if let Some(fill_color) = args.get_one::<String>("fill-color").map(String::as_str) {
+    if let Some(fill_color) =
+        args.get_one::<String>("fill-color").map(String::as_str)
+    {
         settings.fill_color = fill_color.to_string();
     }
 
-    if let Some(font_family) = args.get_one::<String>("font-family").map(String::as_str) {
+    if let Some(font_family) =
+        args.get_one::<String>("font-family").map(String::as_str)
+    {
         settings.font_family = font_family.to_string();
     }
 
@@ -122,7 +134,7 @@ fn main() {
         settings.scale *= s;
     }
 
-    let svg = svgbob::to_svg_with_settings(&*bob, &settings);
+    let svg = svgbob::to_svg_with_settings(&bob, &settings);
 
     if let Some(file) = args.get_one::<String>("output").map(String::as_str) {
         if let Err(e) = fs::write(file, &svg) {
@@ -146,28 +158,35 @@ fn parse_value_of<T: FromStr>(args: &ArgMatches, arg_name: &str) -> Option<T>
 where
     <T as std::str::FromStr>::Err: std::fmt::Display,
 {
-    return args.get_one::<String>(arg_name).map(|arg| match arg.parse::<T>() {
-        Ok(a) => a,
-        Err(e) => {
-            use std::io::Write;
+    args.get_one::<String>(arg_name)
+        .map(|arg| match arg.parse::<T>() {
+            Ok(a) => a,
+            Err(e) => {
+                use std::io::Write;
 
-            writeln!(
-                &mut std::io::stderr(),
-                "Illegal value for argument {}: {}",
-                arg_name,
-                e
-            )
-            .unwrap();
-            exit(1);
-        }
-    });
+                writeln!(
+                    &mut std::io::stderr(),
+                    "Illegal value for argument {}: {}",
+                    arg_name,
+                    e
+                )
+                .unwrap();
+                exit(1);
+            }
+        })
 }
 
 // Batch convert files to svg
 // use svgbob build -i inputdir/*.bob -o outdir/
 fn build(args: &ArgMatches) -> Result<(), Box<dyn Error>> {
-    let files_pattern = args.get_one::<String>("input").map(String::as_str).unwrap_or("*.bob");
-    let outdir = args.get_one::<String>("outdir").map(String::as_str).unwrap_or("");
+    let files_pattern = args
+        .get_one::<String>("input")
+        .map(String::as_str)
+        .unwrap_or("*.bob");
+    let outdir = args
+        .get_one::<String>("outdir")
+        .map(String::as_str)
+        .unwrap_or("");
     let input_path = Path::new(files_pattern);
     let ext = input_path
         .extension()
@@ -230,7 +249,7 @@ fn convert_file(input: PathBuf, output: PathBuf) -> Result<(), Box<dyn Error>> {
     let mut bob = String::new();
     let mut f = File::open(&input)?;
     f.read_to_string(&mut bob).unwrap();
-    let svg = svgbob::to_svg_with_settings(&*bob, &Settings::default());
+    let svg = svgbob::to_svg_with_settings(&bob, &Settings::default());
     fs::write(&output, &svg)?;
     Ok(())
 }

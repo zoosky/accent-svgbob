@@ -1,10 +1,10 @@
 name: "Build"
 
-on: [push]
-
-# on:
-#   release:
-#     types: [created]
+# Manual only: the workflow still uses actions/upload-artifact@v3, which
+# GitHub fails at job setup since 2024-11, so running it on every push
+# just produced a guaranteed red check. Modernizing the release pipeline
+# is its own task; trigger it by hand if a build matrix run is needed.
+on: [workflow_dispatch]
 
 jobs:
   build:

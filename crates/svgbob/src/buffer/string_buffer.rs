@@ -48,7 +48,7 @@ impl StringBuffer {
     pub fn add_char(&mut self, x: i32, y: i32, ch: char) {
         if x >= 0 && y >= 0 {
             if ch == '\0' {
-                println!("skipping {}", ch);
+                log::trace!("skipping a NUL placeholder cell");
             } else {
                 let row_index = y as usize;
                 let column_index = x as usize;
@@ -59,7 +59,7 @@ impl StringBuffer {
                 let column = &self[y as usize];
                 let column_diff = x - column.len() as i32;
                 if column_diff >= 0 {
-                    self.add_column(row_index as usize, column_diff + 1);
+                    self.add_column(row_index, column_diff + 1);
                 }
                 self[row_index][column_index] = ch;
             }
@@ -94,8 +94,8 @@ impl From<&str> for StringBuffer {
     }
 }
 
-impl ToString for StringBuffer {
-    fn to_string(&self) -> String {
+impl std::fmt::Display for StringBuffer {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         let mut lines = vec![];
         for row in self.iter() {
             let row_contents: Vec<String> = row
@@ -106,6 +106,6 @@ impl ToString for StringBuffer {
             let line = row_contents.join("").trim_end().to_string();
             lines.push(line);
         }
-        lines.join("\n")
+        write!(f, "{}", lines.join("\n"))
     }
 }

@@ -1,5 +1,8 @@
 #![deny(warnings)]
-#![allow(unused)]
+// Upstream-inherited API surface (helper methods, circle-map tables) is
+// retained even where nothing calls it yet, to keep the diff against
+// ivanceras/svgbob reviewable; parts of it are exercised only by tests.
+#![allow(dead_code)]
 #![deny(clippy::all)]
 
 pub mod buffer;
@@ -11,15 +14,8 @@ pub mod util;
 pub mod vdom;
 
 pub use buffer::{
-    fragment,
-    fragment::Fragment,
-    Cell,
-    CellBuffer,
-    Direction,
-    FragmentBuffer,
-    FragmentSpan,
-    Property,
-    Signal,
+    fragment, fragment::Fragment, Cell, CellBuffer, Direction, FragmentBuffer,
+    FragmentSpan, Property, Signal,
 };
 pub use merge::Merge;
 pub use nalgebra;
