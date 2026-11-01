@@ -1,28 +1,65 @@
 use crate::{
     buffer::{
-        fragment_buffer::{FragmentSpan, FragmentTree},
-        Fragment, StringBuffer,
+        fragment_buffer::{
+            FragmentSpan,
+            FragmentTree,
+        },
+        Fragment,
+        StringBuffer,
     },
     fragment::CellText,
     util::parser,
-    Merge, Settings,
+    vdom::{
+        attributes::{
+            class,
+            cx,
+            cy,
+            height,
+            id,
+            marker_height,
+            marker_width,
+            orient,
+            points,
+            r,
+            ref_x,
+            ref_y,
+            view_box,
+            width,
+            x,
+            xmlns,
+            y,
+        },
+        elements::{
+            self,
+            circle,
+            defs,
+            g,
+            marker,
+            polygon,
+            rect,
+            svg,
+        },
+        text,
+        Node,
+    },
+    Merge,
+    Settings,
 };
-pub use cell::{Cell, CellGrid};
+pub use cell::{
+    Cell,
+    CellGrid,
+};
 pub use contacts::Contacts;
 pub use endorse::Endorse;
 use itertools::Itertools;
-use sauron::{
-    html,
-    html::attributes::{class, id},
-    html::*,
-    svg::{attributes::*, *},
-    Node,
-};
 pub use span::Span;
 use std::{
     collections::BTreeMap,
     fmt,
-    ops::{Deref, DerefMut},
+    ops::{
+        Deref,
+        DerefMut,
+    },
 };
 use unicode_width::UnicodeWidthStr;
 
@@ -270,8 +307,6 @@ impl CellBuffer {
     }
 
     fn style<MSG>(settings: &Settings, legend_css: String) -> Node<MSG> {
-        use sauron::html::units::px;
-
         let stroke_color = settings.stroke_color.to_owned();
         let stroke_width = settings.stroke_width.to_owned();
         let background = settings.background.to_owned();
@@ -279,93 +314,97 @@ impl CellBuffer {
         let font_family = settings.font_family.to_owned();
         let font_size = settings.font_size.to_owned();
 
-        // we put a .svgbob class in order to avoid clashing with other svg in the document
-        // since the style element in this svg also affects the other svg element in the whole
-        // document
-        let element_styles = sauron::jss! {
-                ".svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon": {
-                      stroke: stroke_color.clone(),
-                      stroke_width: stroke_width,
-                      stroke_opacity: 1,
-                      fill_opacity: 1,
-                      stroke_linecap: "round",
-                      stroke_linejoin: "miter",
-                },
+        // The CSS was produced by sauron's jss! macro before the sauron
+        // dependency was removed; this template reproduces its output
+        // byte for byte (see tests/parity.rs). A .svgbob class scopes every
+        // rule so the style element does not affect other svg elements in
+        // the same document.
+        let element_styles = format!(
+            "\
+.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {{
+  stroke: {stroke_color};
+  stroke-width: {stroke_width};
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}}
 
-                ".svgbob text": {
-                    /* This fix the spacing bug in svg text*/
-                    white_space: "pre",
-                    fill: stroke_color,
-                    font_family: font_family,
-                    font_size: px(font_size),
-                },
+.svgbob text {{
+  white-space: pre;
+  fill: {stroke_color};
+  font-family: {font_family};
+  font-size: {font_size}px;
+}}
 
-                ".svgbob rect.backdrop":{
-                    stroke: "none",
-                    fill: background.clone(),
-                },
+.svgbob rect.backdrop {{
+  stroke: none;
+  fill: {background};
+}}
 
-                ".svgbob .broken":{
-                    stroke_dasharray: 8,
-                },
+.svgbob .broken {{
+  stroke-dasharray: 8;
+}}
 
-                ".svgbob .filled":{
-                    fill: fill_color,
-                },
+.svgbob .filled {{
+  fill: {fill_color};
+}}
 
-                ".svgbob .bg_filled":{
-                    fill: background.clone(),
-                    stroke_width: 1,
-                },
+.svgbob .bg_filled {{
+  fill: {background};
+  stroke-width: 1;
+}}
 
-                ".svgbob .nofill":{
-                    fill: background,
-                },
+.svgbob .nofill {{
+  fill: {background};
+}}
 
-                ".svgbob .end_marked_arrow":{
-                    marker_end: "url(#arrow)",
-                },
+.svgbob .end_marked_arrow {{
+  marker-end: url(#arrow);
+}}
 
-                ".svgbob .start_marked_arrow":{
-                    marker_start: "url(#arrow)",
-                },
+.svgbob .start_marked_arrow {{
+  marker-start: url(#arrow);
+}}
 
-                ".svgbob .end_marked_diamond":{
-                    marker_end: "url(#diamond)",
-                },
-                ".svgbob .start_marked_diamond":{
-                    marker_start: "url(#diamond)",
-                },
+.svgbob .end_marked_diamond {{
+  marker-end: url(#diamond);
+}}
 
-                ".svgbob .end_marked_circle":{
-                    marker_end: "url(#circle)",
-                },
+.svgbob .start_marked_diamond {{
+  marker-start: url(#diamond);
+}}
 
-                ".svgbob .start_marked_circle":{
-                    marker_start: "url(#circle)",
-                },
+.svgbob .end_marked_circle {{
+  marker-end: url(#circle);
+}}
 
-                ".svgbob .end_marked_open_circle":{
-                    marker_end: "url(#open_circle)",
-                },
+.svgbob .start_marked_circle {{
+  marker-start: url(#circle);
+}}
 
-                ".svgbob .start_marked_open_circle":{
-                    marker_start: "url(#open_circle)",
-                },
+.svgbob .end_marked_open_circle {{
+  marker-end: url(#open_circle);
+}}
 
-                ".svgbob .end_marked_big_open_circle":{
-                    marker_end: "url(#big_open_circle)",
-                },
+.svgbob .start_marked_open_circle {{
+  marker-start: url(#open_circle);
+}}
 
-                ".svgbob .start_marked_big_open_circle": {
-                    marker_start: "url(#big_open_circle)",
-                }
-        };
+.svgbob .end_marked_big_open_circle {{
+  marker-end: url(#big_open_circle);
+}}
+
+.svgbob .start_marked_big_open_circle {{
+  marker-start: url(#big_open_circle);
+}}
+"
+        );
 
         // Combine the css, so as not to have a <!-- separator --> comment which
         // was intended only for text node added after a previous text node.
         let css = [element_styles, legend_css].join("\n");
-        html::tags::style([], [text(css)])
+        elements::style([], [text(css)])
     }
 
     /// convert the fragments into svg nodes using the supplied settings, with size for the
@@ -469,10 +508,7 @@ impl CellBuffer {
                 marker_height(7),
                 orient("auto-start-reverse"),
             ],
-            [circle(
-                [cx(4), cy(4), r(2), html::attributes::class("bg_filled")],
-                [],
-            )],
+            [circle([cx(4), cy(4), r(2), class("bg_filled")], [])],
         )
     }
 
@@ -487,10 +523,7 @@ impl CellBuffer {
                 marker_height(7),
                 orient("auto-start-reverse"),
             ],
-            [circle(
-                [cx(4), cy(4), r(2), html::attributes::class("filled")],
-                [],
-            )],
+            [circle([cx(4), cy(4), r(2), class("filled")], [])],
         )
     }
 
@@ -505,10 +538,7 @@ impl CellBuffer {
                 marker_height(7),
                 orient("auto-start-reverse"),
             ],
-            [circle(
-                [cx(4), cy(4), r(3), html::attributes::class("bg_filled")],
-                [],
-            )],
+            [circle([cx(4), cy(4), r(3), class("bg_filled")], [])],
         )
     }
 

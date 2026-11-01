@@ -8,18 +8,24 @@ mod merge;
 mod point;
 mod settings;
 pub mod util;
+pub mod vdom;
 
 pub use buffer::{
-    fragment, fragment::Fragment, Cell, CellBuffer, Direction, FragmentBuffer,
-    FragmentSpan, Property, Signal,
+    fragment,
+    fragment::Fragment,
+    Cell,
+    CellBuffer,
+    Direction,
+    FragmentBuffer,
+    FragmentSpan,
+    Property,
+    Signal,
 };
 pub use merge::Merge;
 pub use nalgebra;
 pub use point::Point;
-/// reexport sauron
-pub use sauron;
-pub use sauron::Node;
 pub use settings::Settings;
+pub use vdom::Node;
 
 pub fn to_svg(ascii: &str) -> String {
     to_svg_string_pretty(ascii)

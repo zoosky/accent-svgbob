@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+- Remove the `sauron` dependency. svgbob only used it to build an element
+  tree and print it; an internal `vdom` module now does both, byte-identical
+  to sauron 0.61's output. This drops the whole web subtree (sauron,
+  web-sys, wasm-bindgen, jss) and sauron-core's `futures = "=0.3.30"` exact
+  pin from the dependency tree, and removes the `with-dom` cargo feature and
+  the `svgbob::sauron` re-export. `svgbob::Node` is now the internal type.
+- Add byte-parity goldens (`tests/parity/`, all `test_data/*.bob` fixtures
+  through the three public entry points) generated at the last sauron
+  revision, with `examples/gen_parity.rs` to regenerate them deliberately.
+
 ## 0.7.2
 - update to sauron 0.60
 - fix: [issue#89](https://github.com/ivanceras/svgbob/issues/89)

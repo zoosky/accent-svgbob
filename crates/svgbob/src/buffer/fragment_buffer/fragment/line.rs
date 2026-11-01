@@ -1,18 +1,49 @@
 use crate::{
-    buffer::{fragment_buffer::fragment::polygon::Polygon, Cell, Fragment},
-    fragment::{marker_line, Bounds, Circle, Marker, MarkerLine},
-    util, Direction, Point,
+    buffer::{
+        fragment_buffer::fragment::polygon::Polygon,
+        Cell,
+        Fragment,
+    },
+    fragment::{
+        marker_line,
+        Bounds,
+        Circle,
+        Marker,
+        MarkerLine,
+    },
+    util,
+    Direction,
+    Point,
 };
 use parry2d::{
     bounding_volume::Aabb,
     math::Isometry,
     query::PointQuery,
-    shape::{Polyline, Segment, Shape},
+    shape::{
+        Polyline,
+        Segment,
+        Shape,
+    },
 };
-use std::{cmp::Ordering, fmt};
+use std::{
+    cmp::Ordering,
+    fmt,
+};
 
-use crate::fragment::Arc;
-use sauron::{html::attributes::*, svg, svg::attributes::*, Node};
+use crate::{
+    fragment::Arc,
+    vdom::{
+        attributes::{
+            classes_flag,
+            x1,
+            x2,
+            y1,
+            y2,
+        },
+        elements,
+        Node,
+    },
+};
 
 #[derive(Debug, Clone)]
 pub struct Line {
@@ -392,7 +423,7 @@ impl fmt::Display for Line {
 
 impl<MSG> From<Line> for Node<MSG> {
     fn from(line: Line) -> Node<MSG> {
-        svg::line(
+        elements::line(
             [
                 x1(line.start.x),
                 y1(line.start.y),
@@ -442,7 +473,8 @@ impl PartialEq for Line {
 mod tests {
     use super::*;
     use crate::buffer::{
-        fragment_buffer::fragment::polygon::PolygonTag, CellGrid,
+        fragment_buffer::fragment::polygon::PolygonTag,
+        CellGrid,
     };
 
     #[test]

@@ -1,15 +1,31 @@
-use crate::{fragment::Bounds, util, Cell, Point};
+use crate::{
+    fragment::Bounds,
+    util,
+    Cell,
+    Point,
+};
 use nalgebra::Point2;
-use parry2d::shape::{ConvexPolygon, Polyline};
+use parry2d::shape::{
+    ConvexPolygon,
+    Polyline,
+};
 use std::{
     cmp::Ordering,
     fmt,
-    hash::{Hash, Hasher},
+    hash::{
+        Hash,
+        Hasher,
+    },
 };
 
-use sauron::{
-    html::attributes::*,
-    svg::{attributes::*, *},
+use crate::vdom::{
+    attributes::{
+        classes_flag,
+        cx,
+        cy,
+        r,
+    },
+    elements::circle,
     Node,
 };
 

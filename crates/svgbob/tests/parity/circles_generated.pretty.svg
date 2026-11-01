@@ -1,0 +1,857 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="38128" class="svgbob">
+  <style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}
+
+.svgbob text {
+  white-space: pre;
+  fill: black;
+  font-family: Iosevka Fixed, monospace;
+  font-size: 14px;
+}
+
+.svgbob rect.backdrop {
+  stroke: none;
+  fill: white;
+}
+
+.svgbob .broken {
+  stroke-dasharray: 8;
+}
+
+.svgbob .filled {
+  fill: black;
+}
+
+.svgbob .bg_filled {
+  fill: white;
+  stroke-width: 1;
+}
+
+.svgbob .nofill {
+  fill: white;
+}
+
+.svgbob .end_marked_arrow {
+  marker-end: url(#arrow);
+}
+
+.svgbob .start_marked_arrow {
+  marker-start: url(#arrow);
+}
+
+.svgbob .end_marked_diamond {
+  marker-end: url(#diamond);
+}
+
+.svgbob .start_marked_diamond {
+  marker-start: url(#diamond);
+}
+
+.svgbob .end_marked_circle {
+  marker-end: url(#circle);
+}
+
+.svgbob .start_marked_circle {
+  marker-start: url(#circle);
+}
+
+.svgbob .end_marked_open_circle {
+  marker-end: url(#open_circle);
+}
+
+.svgbob .start_marked_open_circle {
+  marker-start: url(#open_circle);
+}
+
+.svgbob .end_marked_big_open_circle {
+  marker-end: url(#big_open_circle);
+}
+
+.svgbob .start_marked_big_open_circle {
+  marker-start: url(#big_open_circle);
+}
+
+</style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="192" height="38128"></rect>
+  <circle cx="8" cy="72" r="4" class="nofill"></circle>
+  <circle cx="12" cy="152" r="8" class="nofill"></circle>
+  <circle cx="16" cy="248" r="12" class="nofill"></circle>
+  <circle cx="20" cy="344" r="16" class="nofill"></circle>
+  <circle cx="24" cy="456" r="20" class="nofill"></circle>
+  <circle cx="28" cy="584" r="24" class="nofill"></circle>
+  <circle cx="32" cy="712" r="28" class="nofill"></circle>
+  <circle cx="36" cy="840" r="32" class="nofill"></circle>
+  <circle cx="36" cy="992" r="36" class="nofill"></circle>
+  <circle cx="40" cy="1136" r="40" class="nofill"></circle>
+  <circle cx="48" cy="1288" r="44" class="nofill"></circle>
+  <circle cx="52" cy="1448" r="48" class="nofill"></circle>
+  <circle cx="56" cy="1616" r="52" class="nofill"></circle>
+  <circle cx="60" cy="1792" r="56" class="nofill"></circle>
+  <circle cx="64" cy="1976" r="60" class="nofill"></circle>
+  <circle cx="68" cy="2168" r="64" class="nofill"></circle>
+  <circle cx="72" cy="2376" r="68" class="nofill"></circle>
+  <circle cx="76" cy="2600" r="72" class="nofill"></circle>
+  <circle cx="80" cy="2824" r="76" class="nofill"></circle>
+  <circle cx="84" cy="3048" r="80" class="nofill"></circle>
+  <circle cx="88" cy="3272" r="84" class="nofill"></circle>
+  <circle cx="92" cy="3512" r="88" class="nofill"></circle>
+  <path d="M 0,3684 A 20,20 0,0,1 20,3704" class="nofill"></path>
+  <path d="M 20,3784 A 16,16 0,0,0 4,3800" class="nofill"></path>
+  <path d="M 4,3880 A 20,20 0,0,0 24,3900" class="nofill"></path>
+  <path d="M 20,3976 A 20,20 0,0,1 0,3996" class="nofill"></path>
+  <path d="M 0,4068 A 20,20 0,0,1 20,4088" class="nofill"></path>
+  <path d="M 24,4164 A 20,20 0,0,0 4,4184" class="nofill"></path>
+  <path d="M 4,4264 A 20,20 0,0,0 24,4284" class="nofill"></path>
+  <path d="M 20,4360 A 20,20 0,0,1 0,4380" class="nofill"></path>
+  <path d="M 0,4460 A 28,28 0,0,1 28,4488" class="nofill"></path>
+  <path d="M 28,4576 A 24,24 0,0,0 4,4600" class="nofill"></path>
+  <path d="M 4,4680 A 28,28 0,0,0 32,4708" class="nofill"></path>
+  <path d="M 28,4776 A 28,28 0,0,1 0,4804" class="nofill"></path>
+  <path d="M 0,4876 A 28,28 0,0,1 28,4904" class="nofill"></path>
+  <path d="M 32,4988 A 28,28 0,0,0 4,5016" class="nofill"></path>
+  <path d="M 4,5096 A 28,28 0,0,0 32,5124" class="nofill"></path>
+  <path d="M 28,5192 A 28,28 0,0,1 0,5220" class="nofill"></path>
+  <path d="M 4,5288 A 32,32 0,0,1 36,5320" class="nofill"></path>
+  <path d="M 36,5400 A 32,32 0,0,0 4,5432" class="nofill"></path>
+  <path d="M 4,5512 A 32,32 0,0,0 36,5544" class="nofill"></path>
+  <path d="M 36,5624 A 32,32 0,0,1 4,5656" class="nofill"></path>
+  <path d="M 0,5736 A 40,40 0,0,1 40,5776" class="nofill"></path>
+  <path d="M 40,5848 A 40,40 0,0,0 0,5888" class="nofill"></path>
+  <path d="M 0,5952 A 40,40 0,0,0 40,5992" class="nofill"></path>
+  <path d="M 40,6048 A 40,40 0,0,1 0,6088" class="nofill"></path>
+  <path d="M 0,6152 A 40,40 0,0,1 40,6192" class="nofill"></path>
+  <path d="M 40,6264 A 40,40 0,0,0 0,6304" class="nofill"></path>
+  <path d="M 0,6368 A 40,40 0,0,0 40,6408" class="nofill"></path>
+  <path d="M 40,6464 A 40,40 0,0,1 0,6504" class="nofill"></path>
+  <path d="M 0,6572 A 44,44 0,0,1 44,6616" class="nofill"></path>
+  <path d="M 48,6700 A 44,44 0,0,0 4,6744" class="nofill"></path>
+  <path d="M 4,6824 A 44,44 0,0,0 48,6868" class="nofill"></path>
+  <path d="M 44,6936 A 44,44 0,0,1 0,6980" class="nofill"></path>
+  <path d="M 4,7048 A 48,48 0,0,1 52,7096" class="nofill"></path>
+  <path d="M 52,7176 A 48,48 0,0,0 4,7224" class="nofill"></path>
+  <path d="M 4,7304 A 48,48 0,0,0 52,7352" class="nofill"></path>
+  <path d="M 52,7416 A 48,48 0,0,1 4,7464" class="nofill"></path>
+  <path d="M 0,7532 A 52,52 0,0,1 52,7584" class="nofill"></path>
+  <path d="M 56,7660 A 52,52 0,0,0 4,7712" class="nofill"></path>
+  <path d="M 4,7776 A 52,52 0,0,0 56,7828" class="nofill"></path>
+  <path d="M 52,7888 A 52,52 0,0,1 0,7940" class="nofill"></path>
+  <path d="M 4,8008 A 56,56 0,0,1 60,8064" class="nofill"></path>
+  <path d="M 60,8136 A 56,56 0,0,0 4,8192" class="nofill"></path>
+  <path d="M 4,8256 A 56,56 0,0,0 60,8312" class="nofill"></path>
+  <path d="M 60,8368 A 56,56 0,0,1 4,8424" class="nofill"></path>
+  <path d="M 0,8492 A 60,60 0,0,1 60,8552" class="nofill"></path>
+  <path d="M 64,8636 A 60,60 0,0,0 4,8696" class="nofill"></path>
+  <path d="M 4,8776 A 60,60 0,0,0 64,8836" class="nofill"></path>
+  <path d="M 60,8904 A 60,60 0,0,1 0,8964" class="nofill"></path>
+  <path d="M 4,9032 A 64,64 0,0,1 68,9096" class="nofill"></path>
+  <path d="M 68,9176 A 64,64 0,0,0 4,9240" class="nofill"></path>
+  <path d="M 4,9320 A 68,68 0,0,0 72,9388" class="nofill"></path>
+  <path d="M 68,9464 A 68,68 0,0,1 0,9532" class="nofill"></path>
+  <path d="M 0,9604 A 68,68 0,0,1 68,9672" class="nofill"></path>
+  <path d="M 72,9748 A 68,68 0,0,0 4,9816" class="nofill"></path>
+  <path d="M 4,9896 A 68,68 0,0,0 72,9964" class="nofill"></path>
+  <path d="M 68,10040 A 68,68 0,0,1 0,10108" class="nofill"></path>
+  <path d="M 0,10188 A 76,76 0,0,1 76,10264" class="nofill"></path>
+  <path d="M 80,10348 A 76,76 0,0,0 4,10424" class="nofill"></path>
+  <path d="M 4,10504 A 76,76 0,0,0 80,10580" class="nofill"></path>
+  <path d="M 76,10648 A 76,76 0,0,1 0,10724" class="nofill"></path>
+  <path d="M 0,10796 A 76,76 0,0,1 76,10872" class="nofill"></path>
+  <path d="M 80,10956 A 76,76 0,0,0 4,11032" class="nofill"></path>
+  <path d="M 4,11112 A 76,76 0,0,0 80,11188" class="nofill"></path>
+  <path d="M 76,11256 A 76,76 0,0,1 0,11332" class="nofill"></path>
+  <path d="M 0,11396 A 84,84 0,0,1 84,11480" class="nofill"></path>
+  <path d="M 88,11556 A 84,84 0,0,0 4,11640" class="nofill"></path>
+  <path d="M 4,11720 A 80,80 0,0,0 84,11800" class="nofill"></path>
+  <path d="M 84,11864 A 80,80 0,0,1 4,11944" class="nofill"></path>
+  <path d="M 0,12004 A 84,84 0,0,1 84,12088" class="nofill"></path>
+  <path d="M 88,12164 A 84,84 0,0,0 4,12248" class="nofill"></path>
+  <path d="M 4,12328 A 84,84 0,0,0 88,12412" class="nofill"></path>
+  <path d="M 84,12488 A 84,84 0,0,1 0,12572" class="nofill"></path>
+  <path d="M 4,12640 A 88,88 0,0,1 92,12728" class="nofill"></path>
+  <path d="M 92,12800 A 88,88 0,0,0 4,12888" class="nofill"></path>
+  <path d="M 4,12968 A 88,88 0,0,0 92,13056" class="nofill"></path>
+  <path d="M 92,13128 A 88,88 0,0,1 4,13216" class="nofill"></path>
+  <path d="M 4,13320 A 16,16 0,0,1 36,13320" class="nofill"></path>
+  <path d="M 4,13400 A 16,16 0,0,0 36,13400" class="nofill"></path>
+  <path d="M 20,13496 A 16,16 0,0,0 20,13528" class="nofill"></path>
+  <path d="M 0,13604 A 20,20 0,0,1 0,13644" class="nofill"></path>
+  <path d="M 4,13736 A 20,20 0,0,1 44,13736" class="nofill"></path>
+  <path d="M 4,13816 A 20,20 0,0,0 44,13816" class="nofill"></path>
+  <path d="M 24,13908 A 20,20 0,0,0 24,13948" class="nofill"></path>
+  <path d="M 0,14020 A 20,20 0,0,1 0,14060" class="nofill"></path>
+  <path d="M 4,14168 A 24,24 0,0,1 52,14168" class="nofill"></path>
+  <path d="M 4,14248 A 24,24 0,0,0 52,14248" class="nofill"></path>
+  <path d="M 28,14352 A 24,24 0,0,0 28,14400" class="nofill"></path>
+  <path d="M 0,14476 A 28,28 0,0,1 0,14532" class="nofill"></path>
+  <path d="M 4,14632 A 28,28 0,0,1 60,14632" class="nofill"></path>
+  <path d="M 4,14712 A 28,28 0,0,0 60,14712" class="nofill"></path>
+  <path d="M 32,14812 A 28,28 0,0,0 32,14868" class="nofill"></path>
+  <path d="M 0,14940 A 28,28 0,0,1 0,14996" class="nofill"></path>
+  <path d="M 4,15096 A 32,32 0,0,1 68,15096" class="nofill"></path>
+  <path d="M 4,15176 A 32,32 0,0,0 68,15176" class="nofill"></path>
+  <path d="M 36,15288 A 32,32 0,0,0 36,15352" class="nofill"></path>
+  <path d="M 4,15432 A 32,32 0,0,1 4,15496" class="nofill"></path>
+  <path d="M 0,15616 A 36,36 0,0,1 72,15616" class="nofill"></path>
+  <path d="M 0,15680 A 36,36 0,0,0 72,15680" class="nofill"></path>
+  <path d="M 40,15784 A 40,40 0,0,0 40,15864" class="nofill"></path>
+  <path d="M 0,15928 A 40,40 0,0,1 0,16008" class="nofill"></path>
+  <path d="M 0,16112 A 40,40 0,0,1 80,16112" class="nofill"></path>
+  <path d="M 0,16176 A 40,40 0,0,0 80,16176" class="nofill"></path>
+  <path d="M 40,16280 A 40,40 0,0,0 40,16360" class="nofill"></path>
+  <path d="M 0,16424 A 40,40 0,0,1 0,16504" class="nofill"></path>
+  <path d="M 4,16616 A 44,44 0,0,1 92,16616" class="nofill"></path>
+  <path d="M 4,16696 A 44,44 0,0,0 92,16696" class="nofill"></path>
+  <path d="M 48,16812 A 44,44 0,0,0 48,16900" class="nofill"></path>
+  <path d="M 0,16972 A 44,44 0,0,1 0,17060" class="nofill"></path>
+  <path d="M 4,17176 A 48,48 0,0,1 100,17176" class="nofill"></path>
+  <path d="M 4,17256 A 48,48 0,0,0 100,17256" class="nofill"></path>
+  <path d="M 52,17368 A 48,48 0,0,0 52,17464" class="nofill"></path>
+  <path d="M 4,17528 A 48,48 0,0,1 4,17624" class="nofill"></path>
+  <path d="M 4,17744 A 52,52 0,0,1 108,17744" class="nofill"></path>
+  <path d="M 4,17808 A 52,52 0,0,0 108,17808" class="nofill"></path>
+  <path d="M 56,17932 A 52,52 0,0,0 56,18036" class="nofill"></path>
+  <path d="M 0,18108 A 52,52 0,0,1 0,18212" class="nofill"></path>
+  <path d="M 4,18336 A 56,56 0,0,1 116,18336" class="nofill"></path>
+  <path d="M 4,18400 A 56,56 0,0,0 116,18400" class="nofill"></path>
+  <path d="M 60,18520 A 56,56 0,0,0 60,18632" class="nofill"></path>
+  <path d="M 4,18696 A 56,56 0,0,1 4,18808" class="nofill"></path>
+  <path d="M 4,18936 A 60,60 0,0,1 124,18936" class="nofill"></path>
+  <path d="M 4,19016 A 60,60 0,0,0 124,19016" class="nofill"></path>
+  <path d="M 64,19148 A 60,60 0,0,0 64,19268" class="nofill"></path>
+  <path d="M 0,19340 A 60,60 0,0,1 0,19460" class="nofill"></path>
+  <path d="M 4,19592 A 64,64 0,0,1 132,19592" class="nofill"></path>
+  <path d="M 4,19672 A 64,64 0,0,0 132,19672" class="nofill"></path>
+  <path d="M 68,19816 A 64,64 0,0,0 68,19944" class="nofill"></path>
+  <path d="M 4,20024 A 64,64 0,0,1 4,20152" class="nofill"></path>
+  <path d="M 4,20296 A 68,68 0,0,1 140,20296" class="nofill"></path>
+  <path d="M 4,20376 A 68,68 0,0,0 140,20376" class="nofill"></path>
+  <path d="M 72,20516 A 68,68 0,0,0 72,20652" class="nofill"></path>
+  <path d="M 0,20724 A 68,68 0,0,1 0,20860" class="nofill"></path>
+  <path d="M 4,21016 A 72,72 0,0,1 148,21016" class="nofill"></path>
+  <path d="M 4,21096 A 72,72 0,0,0 148,21096" class="nofill"></path>
+  <path d="M 80,21244 A 76,76 0,0,0 80,21396" class="nofill"></path>
+  <path d="M 0,21468 A 76,76 0,0,1 0,21620" class="nofill"></path>
+  <path d="M 4,21768 A 76,76 0,0,1 156,21768" class="nofill"></path>
+  <path d="M 4,21848 A 76,76 0,0,0 156,21848" class="nofill"></path>
+  <path d="M 80,21996 A 76,76 0,0,0 80,22148" class="nofill"></path>
+  <path d="M 0,22220 A 76,76 0,0,1 0,22372" class="nofill"></path>
+  <path d="M 4,22520 A 80,80 0,0,1 164,22520" class="nofill"></path>
+  <path d="M 4,22600 A 80,80 0,0,0 164,22600" class="nofill"></path>
+  <path d="M 84,22744 A 80,80 0,0,0 84,22904" class="nofill"></path>
+  <path d="M 4,22968 A 80,80 0,0,1 4,23128" class="nofill"></path>
+  <path d="M 4,23272 A 84,84 0,0,1 172,23272" class="nofill"></path>
+  <path d="M 4,23352 A 84,84 0,0,0 172,23352" class="nofill"></path>
+  <path d="M 88,23508 A 84,84 0,0,0 88,23676" class="nofill"></path>
+  <path d="M 0,23748 A 84,84 0,0,1 0,23916" class="nofill"></path>
+  <path d="M 4,24072 A 88,88 0,0,1 180,24072" class="nofill"></path>
+  <path d="M 4,24152 A 88,88 0,0,0 180,24152" class="nofill"></path>
+  <path d="M 92,24304 A 88,88 0,0,0 92,24480" class="nofill"></path>
+  <path d="M 4,24544 A 88,88 0,0,1 4,24720" class="nofill"></path>
+  <path d="M 36,24824 A 16,16 0,1,0 20,24840" class="nofill"></path>
+  <path d="M 20,24920 A 16,16 0,1,0 36,24936" class="nofill"></path>
+  <path d="M 20,25032 A 16,16 0,1,1 4,25048" class="nofill"></path>
+  <path d="M 4,25160 A 16,16 0,1,1 20,25176" class="nofill"></path>
+  <path d="M 44,25272 A 20,20 0,1,0 24,25292" class="nofill"></path>
+  <path d="M 24,25364 A 20,20 0,1,0 44,25384" class="nofill"></path>
+  <path d="M 24,25476 A 20,20 0,1,1 4,25496" class="nofill"></path>
+  <path d="M 4,25608 A 20,20 0,1,1 24,25628" class="nofill"></path>
+  <path d="M 52,25736 A 24,24 0,1,0 28,25760" class="nofill"></path>
+  <path d="M 28,25840 A 24,24 0,1,0 52,25864" class="nofill"></path>
+  <path d="M 28,25968 A 24,24 0,1,1 4,25992" class="nofill"></path>
+  <path d="M 4,26120 A 24,24 0,1,1 28,26144" class="nofill"></path>
+  <path d="M 60,26248 A 28,28 0,1,0 32,26276" class="nofill"></path>
+  <path d="M 32,26348 A 28,28 0,1,0 60,26376" class="nofill"></path>
+  <path d="M 32,26476 A 28,28 0,1,1 4,26504" class="nofill"></path>
+  <path d="M 4,26632 A 28,28 0,1,1 32,26660" class="nofill"></path>
+  <path d="M 68,26760 A 32,32 0,1,0 36,26792" class="nofill"></path>
+  <path d="M 36,26872 A 32,32 0,1,0 68,26904" class="nofill"></path>
+  <path d="M 36,27016 A 32,32 0,1,1 4,27048" class="nofill"></path>
+  <path d="M 4,27192 A 32,32 0,1,1 36,27224" class="nofill"></path>
+  <path d="M 72,27344 A 36,36 0,1,0 36,27380" class="nofill"></path>
+  <path d="M 36,27452 A 36,36 0,1,0 72,27488" class="nofill"></path>
+  <path d="M 36,27596 A 36,36 0,1,1 0,27632" class="nofill"></path>
+  <path d="M 0,27776 A 36,36 0,1,1 36,27812" class="nofill"></path>
+  <path d="M 80,27920 A 40,40 0,1,0 40,27960" class="nofill"></path>
+  <path d="M 40,28024 A 40,40 0,1,0 80,28064" class="nofill"></path>
+  <path d="M 40,28168 A 40,40 0,1,1 0,28208" class="nofill"></path>
+  <path d="M 0,28352 A 40,40 0,1,1 40,28392" class="nofill"></path>
+  <path d="M 92,28504 A 44,44 0,1,0 48,28548" class="nofill"></path>
+  <path d="M 48,28620 A 44,44 0,1,0 92,28664" class="nofill"></path>
+  <path d="M 48,28780 A 44,44 0,1,1 4,28824" class="nofill"></path>
+  <path d="M 4,28984 A 44,44 0,1,1 48,29028" class="nofill"></path>
+  <path d="M 100,29144 A 48,48 0,1,0 52,29192" class="nofill"></path>
+  <path d="M 52,29256 A 48,48 0,1,0 100,29304" class="nofill"></path>
+  <path d="M 52,29416 A 48,48 0,1,1 4,29464" class="nofill"></path>
+  <path d="M 4,29624 A 48,48 0,1,1 52,29672" class="nofill"></path>
+  <path d="M 108,29792 A 52,52 0,1,0 56,29844" class="nofill"></path>
+  <path d="M 56,29916 A 52,52 0,1,0 108,29968" class="nofill"></path>
+  <path d="M 56,30092 A 52,52 0,1,1 4,30144" class="nofill"></path>
+  <path d="M 4,30320 A 52,52 0,1,1 56,30372" class="nofill"></path>
+  <path d="M 116,30496 A 56,56 0,1,0 60,30552" class="nofill"></path>
+  <path d="M 60,30616 A 56,56 0,1,0 116,30672" class="nofill"></path>
+  <path d="M 60,30792 A 56,56 0,1,1 4,30848" class="nofill"></path>
+  <path d="M 4,31024 A 56,56 0,1,1 60,31080" class="nofill"></path>
+  <path d="M 124,31208 A 60,60 0,1,0 64,31268" class="nofill"></path>
+  <path d="M 64,31340 A 60,60 0,1,0 124,31400" class="nofill"></path>
+  <path d="M 64,31532 A 60,60 0,1,1 4,31592" class="nofill"></path>
+  <path d="M 4,31784 A 60,60 0,1,1 64,31844" class="nofill"></path>
+  <path d="M 132,31976 A 64,64 0,1,0 68,32040" class="nofill"></path>
+  <path d="M 68,32120 A 64,64 0,1,0 132,32184" class="nofill"></path>
+  <path d="M 68,32328 A 64,64 0,1,1 4,32392" class="nofill"></path>
+  <path d="M 4,32600 A 64,64 0,1,1 68,32664" class="nofill"></path>
+  <path d="M 140,32808 A 68,68 0,1,0 72,32876" class="nofill"></path>
+  <path d="M 72,32948 A 68,68 0,1,0 140,33016" class="nofill"></path>
+  <path d="M 72,33156 A 68,68 0,1,1 4,33224" class="nofill"></path>
+  <path d="M 4,33432 A 68,68 0,1,1 72,33500" class="nofill"></path>
+  <path d="M 148,33656 A 72,72 0,1,0 76,33728" class="nofill"></path>
+  <path d="M 76,33808 A 72,72 0,1,0 148,33880" class="nofill"></path>
+  <path d="M 76,34032 A 72,72 0,1,1 4,34104" class="nofill"></path>
+  <path d="M 4,34328 A 72,72 0,1,1 76,34400" class="nofill"></path>
+  <path d="M 156,34552 A 76,76 0,1,0 80,34628" class="nofill"></path>
+  <path d="M 80,34700 A 76,76 0,1,0 156,34776" class="nofill"></path>
+  <path d="M 80,34924 A 76,76 0,1,1 4,35000" class="nofill"></path>
+  <path d="M 4,35224 A 76,76 0,1,1 80,35300" class="nofill"></path>
+  <path d="M 164,35448 A 80,80 0,1,0 84,35528" class="nofill"></path>
+  <path d="M 84,35592 A 80,80 0,1,0 164,35672" class="nofill"></path>
+  <path d="M 84,35816 A 80,80 0,1,1 4,35896" class="nofill"></path>
+  <path d="M 4,36120 A 80,80 0,1,1 84,36200" class="nofill"></path>
+  <path d="M 172,36344 A 84,84 0,1,0 88,36428" class="nofill"></path>
+  <path d="M 88,36500 A 84,84 0,1,0 172,36584" class="nofill"></path>
+  <path d="M 88,36740 A 84,84 0,1,1 4,36824" class="nofill"></path>
+  <path d="M 4,37064 A 84,84 0,1,1 88,37148" class="nofill"></path>
+  <path d="M 180,37304 A 88,88 0,1,0 92,37392" class="nofill"></path>
+  <path d="M 92,37456 A 88,88 0,1,0 180,37544" class="nofill"></path>
+  <path d="M 92,37696 A 88,88 0,1,1 4,37784" class="nofill"></path>
+  <path d="M 4,38024 A 88,88 0,1,1 92,38112" class="nofill"></path>
+  <text x="2" y="28" >CIRCLES</text>
+  <text x="2" y="44" >diameter:</text>
+  <text x="82" y="44" >1</text>
+  <text x="2" y="124" >diameter:</text>
+  <text x="82" y="124" >2</text>
+  <text x="2" y="204" >diameter:</text>
+  <text x="82" y="204" >3</text>
+  <text x="2" y="300" >diameter:</text>
+  <text x="82" y="300" >4</text>
+  <text x="2" y="412" >diameter:</text>
+  <text x="82" y="412" >5</text>
+  <text x="2" y="524" >diameter:</text>
+  <text x="82" y="524" >6</text>
+  <text x="2" y="652" >diameter:</text>
+  <text x="82" y="652" >7</text>
+  <text x="2" y="780" >diameter:</text>
+  <text x="82" y="780" >8</text>
+  <text x="2" y="924" >diameter:</text>
+  <text x="82" y="924" >9</text>
+  <text x="2" y="1068" >diameter:</text>
+  <text x="82" y="1068" >10</text>
+  <text x="2" y="1212" >diameter:</text>
+  <text x="82" y="1212" >11</text>
+  <text x="2" y="1372" >diameter:</text>
+  <text x="82" y="1372" >12</text>
+  <text x="2" y="1532" >diameter:</text>
+  <text x="82" y="1532" >13</text>
+  <text x="2" y="1708" >diameter:</text>
+  <text x="82" y="1708" >14</text>
+  <text x="2" y="1884" >diameter:</text>
+  <text x="82" y="1884" >15</text>
+  <text x="2" y="2076" >diameter:</text>
+  <text x="82" y="2076" >16</text>
+  <text x="2" y="2284" >diameter:</text>
+  <text x="82" y="2284" >17</text>
+  <text x="2" y="2492" >diameter:</text>
+  <text x="82" y="2492" >18</text>
+  <text x="2" y="2716" >diameter:</text>
+  <text x="82" y="2716" >19</text>
+  <text x="2" y="2940" >diameter:</text>
+  <text x="82" y="2940" >20</text>
+  <text x="2" y="3164" >diameter:</text>
+  <text x="82" y="3164" >21</text>
+  <text x="2" y="3404" >diameter:</text>
+  <text x="82" y="3404" >22</text>
+  <text x="2" y="3644" >QUARTER</text>
+  <text x="66" y="3644" >ARCS:</text>
+  <text x="2" y="3660" >diameter:</text>
+  <text x="82" y="3660" >4</text>
+  <text x="2" y="3756" >diameter:</text>
+  <text x="82" y="3756" >4</text>
+  <text x="2" y="3852" >diameter:</text>
+  <text x="82" y="3852" >4</text>
+  <text x="2" y="3948" >diameter:</text>
+  <text x="82" y="3948" >4</text>
+  <text x="2" y="4044" >diameter:</text>
+  <text x="82" y="4044" >5</text>
+  <text x="2" y="4140" >diameter:</text>
+  <text x="82" y="4140" >5</text>
+  <text x="2" y="4236" >diameter:</text>
+  <text x="82" y="4236" >5</text>
+  <text x="2" y="4332" >diameter:</text>
+  <text x="82" y="4332" >5</text>
+  <text x="2" y="4428" >diameter:</text>
+  <text x="82" y="4428" >6</text>
+  <text x="2" y="4540" >diameter:</text>
+  <text x="82" y="4540" >6</text>
+  <text x="2" y="4652" >diameter:</text>
+  <text x="82" y="4652" >6</text>
+  <text x="2" y="4748" >diameter:</text>
+  <text x="82" y="4748" >6</text>
+  <text x="2" y="4844" >diameter:</text>
+  <text x="82" y="4844" >7</text>
+  <text x="2" y="4956" >diameter:</text>
+  <text x="82" y="4956" >7</text>
+  <text x="2" y="5068" >diameter:</text>
+  <text x="82" y="5068" >7</text>
+  <text x="2" y="5164" >diameter:</text>
+  <text x="82" y="5164" >7</text>
+  <text x="2" y="5260" >diameter:</text>
+  <text x="82" y="5260" >8</text>
+  <text x="2" y="5372" >diameter:</text>
+  <text x="82" y="5372" >8</text>
+  <text x="2" y="5484" >diameter:</text>
+  <text x="82" y="5484" >8</text>
+  <text x="2" y="5596" >diameter:</text>
+  <text x="82" y="5596" >8</text>
+  <text x="2" y="5708" >diameter:</text>
+  <text x="82" y="5708" >9</text>
+  <text x="2" y="5820" >diameter:</text>
+  <text x="82" y="5820" >9</text>
+  <text x="2" y="5932" >diameter:</text>
+  <text x="82" y="5932" >9</text>
+  <text x="2" y="6028" >diameter:</text>
+  <text x="82" y="6028" >9</text>
+  <text x="2" y="6124" >diameter:</text>
+  <text x="82" y="6124" >10</text>
+  <text x="2" y="6236" >diameter:</text>
+  <text x="82" y="6236" >10</text>
+  <text x="2" y="6348" >diameter:</text>
+  <text x="82" y="6348" >10</text>
+  <text x="2" y="6444" >diameter:</text>
+  <text x="82" y="6444" >10</text>
+  <text x="2" y="6540" >diameter:</text>
+  <text x="82" y="6540" >11</text>
+  <text x="2" y="6668" >diameter:</text>
+  <text x="82" y="6668" >11</text>
+  <text x="2" y="6796" >diameter:</text>
+  <text x="82" y="6796" >11</text>
+  <text x="2" y="6908" >diameter:</text>
+  <text x="82" y="6908" >11</text>
+  <text x="2" y="7020" >diameter:</text>
+  <text x="82" y="7020" >12</text>
+  <text x="2" y="7148" >diameter:</text>
+  <text x="82" y="7148" >12</text>
+  <text x="2" y="7276" >diameter:</text>
+  <text x="82" y="7276" >12</text>
+  <text x="2" y="7388" >diameter:</text>
+  <text x="82" y="7388" >12</text>
+  <text x="2" y="7500" >diameter:</text>
+  <text x="82" y="7500" >13</text>
+  <text x="2" y="7628" >diameter:</text>
+  <text x="82" y="7628" >13</text>
+  <text x="2" y="7756" >diameter:</text>
+  <text x="82" y="7756" >13</text>
+  <text x="2" y="7868" >diameter:</text>
+  <text x="82" y="7868" >13</text>
+  <text x="2" y="7980" >diameter:</text>
+  <text x="82" y="7980" >14</text>
+  <text x="2" y="8108" >diameter:</text>
+  <text x="82" y="8108" >14</text>
+  <text x="2" y="8236" >diameter:</text>
+  <text x="82" y="8236" >14</text>
+  <text x="2" y="8348" >diameter:</text>
+  <text x="82" y="8348" >14</text>
+  <text x="2" y="8460" >diameter:</text>
+  <text x="82" y="8460" >15</text>
+  <text x="2" y="8604" >diameter:</text>
+  <text x="82" y="8604" >15</text>
+  <text x="2" y="8748" >diameter:</text>
+  <text x="82" y="8748" >15</text>
+  <text x="2" y="8876" >diameter:</text>
+  <text x="82" y="8876" >15</text>
+  <text x="2" y="9004" >diameter:</text>
+  <text x="82" y="9004" >16</text>
+  <text x="2" y="9148" >diameter:</text>
+  <text x="82" y="9148" >16</text>
+  <text x="2" y="9292" >diameter:</text>
+  <text x="82" y="9292" >16</text>
+  <text x="2" y="9436" >diameter:</text>
+  <text x="82" y="9436" >16</text>
+  <text x="2" y="9580" >diameter:</text>
+  <text x="82" y="9580" >17</text>
+  <text x="2" y="9724" >diameter:</text>
+  <text x="82" y="9724" >17</text>
+  <text x="2" y="9868" >diameter:</text>
+  <text x="82" y="9868" >17</text>
+  <text x="2" y="10012" >diameter:</text>
+  <text x="82" y="10012" >17</text>
+  <text x="2" y="10156" >diameter:</text>
+  <text x="82" y="10156" >18</text>
+  <text x="2" y="10316" >diameter:</text>
+  <text x="82" y="10316" >18</text>
+  <text x="2" y="10476" >diameter:</text>
+  <text x="82" y="10476" >18</text>
+  <text x="2" y="10620" >diameter:</text>
+  <text x="82" y="10620" >18</text>
+  <text x="2" y="10764" >diameter:</text>
+  <text x="82" y="10764" >19</text>
+  <text x="2" y="10924" >diameter:</text>
+  <text x="82" y="10924" >19</text>
+  <text x="2" y="11084" >diameter:</text>
+  <text x="82" y="11084" >19</text>
+  <text x="2" y="11228" >diameter:</text>
+  <text x="82" y="11228" >19</text>
+  <text x="2" y="11372" >diameter:</text>
+  <text x="82" y="11372" >20</text>
+  <text x="2" y="11532" >diameter:</text>
+  <text x="82" y="11532" >20</text>
+  <text x="2" y="11692" >diameter:</text>
+  <text x="82" y="11692" >20</text>
+  <text x="2" y="11836" >diameter:</text>
+  <text x="82" y="11836" >20</text>
+  <text x="2" y="11980" >diameter:</text>
+  <text x="82" y="11980" >21</text>
+  <text x="2" y="12140" >diameter:</text>
+  <text x="82" y="12140" >21</text>
+  <text x="2" y="12300" >diameter:</text>
+  <text x="82" y="12300" >21</text>
+  <text x="2" y="12460" >diameter:</text>
+  <text x="82" y="12460" >21</text>
+  <text x="2" y="12620" >diameter:</text>
+  <text x="82" y="12620" >22</text>
+  <text x="2" y="12780" >diameter:</text>
+  <text x="82" y="12780" >22</text>
+  <text x="2" y="12940" >diameter:</text>
+  <text x="82" y="12940" >22</text>
+  <text x="2" y="13100" >diameter:</text>
+  <text x="82" y="13100" >22</text>
+  <text x="2" y="13260" >HALF</text>
+  <text x="42" y="13260" >ARCS:</text>
+  <text x="2" y="13276" >diameter:</text>
+  <text x="82" y="13276" >4</text>
+  <text x="2" y="13372" >diameter:</text>
+  <text x="82" y="13372" >4</text>
+  <text x="2" y="13468" >diameter:</text>
+  <text x="82" y="13468" >4</text>
+  <text x="2" y="13580" >diameter:</text>
+  <text x="82" y="13580" >4</text>
+  <text x="2" y="13692" >diameter:</text>
+  <text x="82" y="13692" >5</text>
+  <text x="2" y="13788" >diameter:</text>
+  <text x="82" y="13788" >5</text>
+  <text x="2" y="13884" >diameter:</text>
+  <text x="82" y="13884" >5</text>
+  <text x="2" y="13996" >diameter:</text>
+  <text x="82" y="13996" >5</text>
+  <text x="2" y="14108" >diameter:</text>
+  <text x="82" y="14108" >6</text>
+  <text x="2" y="14220" >diameter:</text>
+  <text x="82" y="14220" >6</text>
+  <text x="2" y="14316" >diameter:</text>
+  <text x="82" y="14316" >6</text>
+  <text x="2" y="14444" >diameter:</text>
+  <text x="82" y="14444" >6</text>
+  <text x="2" y="14572" >diameter:</text>
+  <text x="82" y="14572" >7</text>
+  <text x="2" y="14684" >diameter:</text>
+  <text x="82" y="14684" >7</text>
+  <text x="2" y="14780" >diameter:</text>
+  <text x="82" y="14780" >7</text>
+  <text x="2" y="14908" >diameter:</text>
+  <text x="82" y="14908" >7</text>
+  <text x="2" y="15036" >diameter:</text>
+  <text x="82" y="15036" >8</text>
+  <text x="2" y="15148" >diameter:</text>
+  <text x="82" y="15148" >8</text>
+  <text x="2" y="15260" >diameter:</text>
+  <text x="82" y="15260" >8</text>
+  <text x="2" y="15404" >diameter:</text>
+  <text x="82" y="15404" >8</text>
+  <text x="2" y="15548" >diameter:</text>
+  <text x="82" y="15548" >9</text>
+  <text x="2" y="15660" >diameter:</text>
+  <text x="82" y="15660" >9</text>
+  <text x="2" y="15756" >diameter:</text>
+  <text x="82" y="15756" >9</text>
+  <text x="2" y="15900" >diameter:</text>
+  <text x="82" y="15900" >9</text>
+  <text x="2" y="16044" >diameter:</text>
+  <text x="82" y="16044" >10</text>
+  <text x="2" y="16156" >diameter:</text>
+  <text x="82" y="16156" >10</text>
+  <text x="2" y="16252" >diameter:</text>
+  <text x="82" y="16252" >10</text>
+  <text x="2" y="16396" >diameter:</text>
+  <text x="82" y="16396" >10</text>
+  <text x="2" y="16540" >diameter:</text>
+  <text x="82" y="16540" >11</text>
+  <text x="2" y="16668" >diameter:</text>
+  <text x="82" y="16668" >11</text>
+  <text x="2" y="16780" >diameter:</text>
+  <text x="82" y="16780" >11</text>
+  <text x="2" y="16940" >diameter:</text>
+  <text x="82" y="16940" >11</text>
+  <text x="2" y="17100" >diameter:</text>
+  <text x="82" y="17100" >12</text>
+  <text x="2" y="17228" >diameter:</text>
+  <text x="82" y="17228" >12</text>
+  <text x="2" y="17340" >diameter:</text>
+  <text x="82" y="17340" >12</text>
+  <text x="2" y="17500" >diameter:</text>
+  <text x="82" y="17500" >12</text>
+  <text x="2" y="17660" >diameter:</text>
+  <text x="82" y="17660" >13</text>
+  <text x="2" y="17788" >diameter:</text>
+  <text x="82" y="17788" >13</text>
+  <text x="2" y="17900" >diameter:</text>
+  <text x="82" y="17900" >13</text>
+  <text x="2" y="18076" >diameter:</text>
+  <text x="82" y="18076" >13</text>
+  <text x="2" y="18252" >diameter:</text>
+  <text x="82" y="18252" >14</text>
+  <text x="2" y="18380" >diameter:</text>
+  <text x="82" y="18380" >14</text>
+  <text x="2" y="18492" >diameter:</text>
+  <text x="82" y="18492" >14</text>
+  <text x="2" y="18668" >diameter:</text>
+  <text x="82" y="18668" >14</text>
+  <text x="2" y="18844" >diameter:</text>
+  <text x="82" y="18844" >15</text>
+  <text x="2" y="18988" >diameter:</text>
+  <text x="82" y="18988" >15</text>
+  <text x="2" y="19116" >diameter:</text>
+  <text x="82" y="19116" >15</text>
+  <text x="2" y="19308" >diameter:</text>
+  <text x="82" y="19308" >15</text>
+  <text x="2" y="19500" >diameter:</text>
+  <text x="82" y="19500" >16</text>
+  <text x="2" y="19644" >diameter:</text>
+  <text x="82" y="19644" >16</text>
+  <text x="2" y="19788" >diameter:</text>
+  <text x="82" y="19788" >16</text>
+  <text x="2" y="19996" >diameter:</text>
+  <text x="82" y="19996" >16</text>
+  <text x="2" y="20204" >diameter:</text>
+  <text x="82" y="20204" >17</text>
+  <text x="2" y="20348" >diameter:</text>
+  <text x="82" y="20348" >17</text>
+  <text x="2" y="20492" >diameter:</text>
+  <text x="82" y="20492" >17</text>
+  <text x="2" y="20700" >diameter:</text>
+  <text x="82" y="20700" >17</text>
+  <text x="2" y="20908" >diameter:</text>
+  <text x="82" y="20908" >18</text>
+  <text x="2" y="21068" >diameter:</text>
+  <text x="82" y="21068" >18</text>
+  <text x="2" y="21212" >diameter:</text>
+  <text x="82" y="21212" >18</text>
+  <text x="2" y="21436" >diameter:</text>
+  <text x="82" y="21436" >18</text>
+  <text x="2" y="21660" >diameter:</text>
+  <text x="82" y="21660" >19</text>
+  <text x="2" y="21820" >diameter:</text>
+  <text x="82" y="21820" >19</text>
+  <text x="2" y="21964" >diameter:</text>
+  <text x="82" y="21964" >19</text>
+  <text x="2" y="22188" >diameter:</text>
+  <text x="82" y="22188" >19</text>
+  <text x="2" y="22412" >diameter:</text>
+  <text x="82" y="22412" >20</text>
+  <text x="2" y="22572" >diameter:</text>
+  <text x="82" y="22572" >20</text>
+  <text x="2" y="22716" >diameter:</text>
+  <text x="82" y="22716" >20</text>
+  <text x="2" y="22940" >diameter:</text>
+  <text x="82" y="22940" >20</text>
+  <text x="2" y="23164" >diameter:</text>
+  <text x="82" y="23164" >21</text>
+  <text x="2" y="23324" >diameter:</text>
+  <text x="82" y="23324" >21</text>
+  <text x="2" y="23484" >diameter:</text>
+  <text x="82" y="23484" >21</text>
+  <text x="2" y="23724" >diameter:</text>
+  <text x="82" y="23724" >21</text>
+  <text x="2" y="23964" >diameter:</text>
+  <text x="82" y="23964" >22</text>
+  <text x="2" y="24124" >diameter:</text>
+  <text x="82" y="24124" >22</text>
+  <text x="2" y="24284" >diameter:</text>
+  <text x="82" y="24284" >22</text>
+  <text x="2" y="24524" >diameter:</text>
+  <text x="82" y="24524" >22</text>
+  <text x="2" y="24764" >THREE</text>
+  <text x="50" y="24764" >QUARTER</text>
+  <text x="2" y="24780" >diameter:</text>
+  <text x="82" y="24780" >4</text>
+  <text x="114" y="24764" >ARCS:</text>
+  <text x="2" y="24892" >diameter:</text>
+  <text x="82" y="24892" >4</text>
+  <text x="2" y="25004" >diameter:</text>
+  <text x="82" y="25004" >4</text>
+  <text x="2" y="25116" >diameter:</text>
+  <text x="82" y="25116" >4</text>
+  <text x="2" y="25228" >diameter:</text>
+  <text x="82" y="25228" >5</text>
+  <text x="2" y="25340" >diameter:</text>
+  <text x="82" y="25340" >5</text>
+  <text x="2" y="25452" >diameter:</text>
+  <text x="82" y="25452" >5</text>
+  <text x="2" y="25564" >diameter:</text>
+  <text x="82" y="25564" >5</text>
+  <text x="2" y="25676" >diameter:</text>
+  <text x="82" y="25676" >6</text>
+  <text x="2" y="25804" >diameter:</text>
+  <text x="82" y="25804" >6</text>
+  <text x="2" y="25932" >diameter:</text>
+  <text x="82" y="25932" >6</text>
+  <text x="2" y="26060" >diameter:</text>
+  <text x="82" y="26060" >6</text>
+  <text x="2" y="26188" >diameter:</text>
+  <text x="82" y="26188" >7</text>
+  <text x="2" y="26316" >diameter:</text>
+  <text x="82" y="26316" >7</text>
+  <text x="2" y="26444" >diameter:</text>
+  <text x="82" y="26444" >7</text>
+  <text x="2" y="26572" >diameter:</text>
+  <text x="82" y="26572" >7</text>
+  <text x="2" y="26700" >diameter:</text>
+  <text x="82" y="26700" >8</text>
+  <text x="2" y="26844" >diameter:</text>
+  <text x="82" y="26844" >8</text>
+  <text x="2" y="26988" >diameter:</text>
+  <text x="82" y="26988" >8</text>
+  <text x="2" y="27132" >diameter:</text>
+  <text x="82" y="27132" >8</text>
+  <text x="2" y="27276" >diameter:</text>
+  <text x="82" y="27276" >9</text>
+  <text x="2" y="27420" >diameter:</text>
+  <text x="82" y="27420" >9</text>
+  <text x="2" y="27564" >diameter:</text>
+  <text x="82" y="27564" >9</text>
+  <text x="2" y="27708" >diameter:</text>
+  <text x="82" y="27708" >9</text>
+  <text x="2" y="27852" >diameter:</text>
+  <text x="82" y="27852" >10</text>
+  <text x="2" y="27996" >diameter:</text>
+  <text x="82" y="27996" >10</text>
+  <text x="2" y="28140" >diameter:</text>
+  <text x="82" y="28140" >10</text>
+  <text x="2" y="28284" >diameter:</text>
+  <text x="82" y="28284" >10</text>
+  <text x="2" y="28428" >diameter:</text>
+  <text x="82" y="28428" >11</text>
+  <text x="2" y="28588" >diameter:</text>
+  <text x="82" y="28588" >11</text>
+  <text x="2" y="28748" >diameter:</text>
+  <text x="82" y="28748" >11</text>
+  <text x="2" y="28908" >diameter:</text>
+  <text x="82" y="28908" >11</text>
+  <text x="2" y="29068" >diameter:</text>
+  <text x="82" y="29068" >12</text>
+  <text x="2" y="29228" >diameter:</text>
+  <text x="82" y="29228" >12</text>
+  <text x="2" y="29388" >diameter:</text>
+  <text x="82" y="29388" >12</text>
+  <text x="2" y="29548" >diameter:</text>
+  <text x="82" y="29548" >12</text>
+  <text x="2" y="29708" >diameter:</text>
+  <text x="82" y="29708" >13</text>
+  <text x="2" y="29884" >diameter:</text>
+  <text x="82" y="29884" >13</text>
+  <text x="2" y="30060" >diameter:</text>
+  <text x="82" y="30060" >13</text>
+  <text x="2" y="30236" >diameter:</text>
+  <text x="82" y="30236" >13</text>
+  <text x="2" y="30412" >diameter:</text>
+  <text x="82" y="30412" >14</text>
+  <text x="2" y="30588" >diameter:</text>
+  <text x="82" y="30588" >14</text>
+  <text x="2" y="30764" >diameter:</text>
+  <text x="82" y="30764" >14</text>
+  <text x="2" y="30940" >diameter:</text>
+  <text x="82" y="30940" >14</text>
+  <text x="2" y="31116" >diameter:</text>
+  <text x="82" y="31116" >15</text>
+  <text x="2" y="31308" >diameter:</text>
+  <text x="82" y="31308" >15</text>
+  <text x="2" y="31500" >diameter:</text>
+  <text x="82" y="31500" >15</text>
+  <text x="2" y="31692" >diameter:</text>
+  <text x="82" y="31692" >15</text>
+  <text x="2" y="31884" >diameter:</text>
+  <text x="82" y="31884" >16</text>
+  <text x="2" y="32092" >diameter:</text>
+  <text x="82" y="32092" >16</text>
+  <text x="2" y="32300" >diameter:</text>
+  <text x="82" y="32300" >16</text>
+  <text x="2" y="32508" >diameter:</text>
+  <text x="82" y="32508" >16</text>
+  <text x="2" y="32716" >diameter:</text>
+  <text x="82" y="32716" >17</text>
+  <text x="2" y="32924" >diameter:</text>
+  <text x="82" y="32924" >17</text>
+  <text x="2" y="33132" >diameter:</text>
+  <text x="82" y="33132" >17</text>
+  <text x="2" y="33340" >diameter:</text>
+  <text x="82" y="33340" >17</text>
+  <text x="2" y="33548" >diameter:</text>
+  <text x="82" y="33548" >18</text>
+  <text x="2" y="33772" >diameter:</text>
+  <text x="82" y="33772" >18</text>
+  <text x="2" y="33996" >diameter:</text>
+  <text x="82" y="33996" >18</text>
+  <text x="2" y="34220" >diameter:</text>
+  <text x="82" y="34220" >18</text>
+  <text x="2" y="34444" >diameter:</text>
+  <text x="82" y="34444" >19</text>
+  <text x="2" y="34668" >diameter:</text>
+  <text x="82" y="34668" >19</text>
+  <text x="2" y="34892" >diameter:</text>
+  <text x="82" y="34892" >19</text>
+  <text x="2" y="35116" >diameter:</text>
+  <text x="82" y="35116" >19</text>
+  <text x="2" y="35340" >diameter:</text>
+  <text x="82" y="35340" >20</text>
+  <text x="2" y="35564" >diameter:</text>
+  <text x="82" y="35564" >20</text>
+  <text x="2" y="35788" >diameter:</text>
+  <text x="82" y="35788" >20</text>
+  <text x="2" y="36012" >diameter:</text>
+  <text x="82" y="36012" >20</text>
+  <text x="2" y="36236" >diameter:</text>
+  <text x="82" y="36236" >21</text>
+  <text x="2" y="36476" >diameter:</text>
+  <text x="82" y="36476" >21</text>
+  <text x="2" y="36716" >diameter:</text>
+  <text x="82" y="36716" >21</text>
+  <text x="2" y="36956" >diameter:</text>
+  <text x="82" y="36956" >21</text>
+  <text x="2" y="37196" >diameter:</text>
+  <text x="82" y="37196" >22</text>
+  <text x="2" y="37436" >diameter:</text>
+  <text x="82" y="37436" >22</text>
+  <text x="2" y="37676" >diameter:</text>
+  <text x="82" y="37676" >22</text>
+  <text x="2" y="37916" >diameter:</text>
+  <text x="82" y="37916" >22</text>
+</svg>
