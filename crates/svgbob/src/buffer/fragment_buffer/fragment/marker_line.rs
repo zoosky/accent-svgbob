@@ -1,8 +1,18 @@
 use crate::{
-    fragment::{marker_line, Bounds, Cell, Fragment, Line, Polygon},
+    fragment::{
+        marker_line,
+        Bounds,
+        Cell,
+        Fragment,
+        Line,
+        Polygon,
+    },
+    vdom::{
+        attributes::class,
+        Node,
+    },
     Point,
 };
-use sauron::{html::attributes::class, Node};
 use std::fmt;
 
 #[derive(Debug, Clone, PartialEq, Eq)]

@@ -1,11 +1,31 @@
-use crate::{fragment::Bounds, util, Cell, Point};
-use parry2d::shape::{ConvexPolygon, Polyline, Segment, Shape};
-use sauron::{
-    html::attributes::{class, classes_flag},
-    svg::{attributes::*, *},
-    Node,
+use crate::{
+    fragment::Bounds,
+    util,
+    vdom::{
+        attributes::{
+            classes_flag,
+            height,
+            rx,
+            width,
+            x,
+            y,
+        },
+        elements::rect,
+        Node,
+    },
+    Cell,
+    Point,
 };
-use std::{cmp::Ordering, fmt};
+use parry2d::shape::{
+    ConvexPolygon,
+    Polyline,
+    Segment,
+    Shape,
+};
+use std::{
+    cmp::Ordering,
+    fmt,
+};
 
 #[derive(Debug, Clone)]
 pub struct Rect {

@@ -1,10 +1,27 @@
 use crate::{
-    buffer::{Cell, CellGrid, Span},
+    buffer::{
+        Cell,
+        CellGrid,
+        Span,
+    },
     fragment::Bounds,
-    FragmentSpan, Point,
+    vdom::{
+        attributes::{
+            x,
+            y,
+        },
+        elements,
+        text,
+        Node,
+    },
+    FragmentSpan,
+    Point,
 };
-use sauron::{html::*, svg, svg::attributes::*, Node};
-use std::{borrow::Cow, cmp::Ordering, fmt};
+use std::{
+    borrow::Cow,
+    cmp::Ordering,
+    fmt,
+};
 
 /// A horizontal cell text
 /// Operated based on cell
@@ -177,12 +194,9 @@ impl fmt::Display for Text {
 
 impl<MSG> From<Text> for Node<MSG> {
     fn from(t: Text) -> Node<MSG> {
-        svg::tags::text(
+        elements::text(
             [x(t.start.x), y(t.start.y)],
-            #[cfg(not(feature = "with-dom"))]
             [text(escape_html_text(&t.text))],
-            #[cfg(feature = "with-dom")]
-            [text(&t.text)],
         )
     }
 }
@@ -223,7 +237,12 @@ impl PartialEq for Text {
 mod tests {
     use super::*;
     use crate::{
-        buffer::{Cell, CellBuffer, Contacts, Span},
+        buffer::{
+            Cell,
+            CellBuffer,
+            Contacts,
+            Span,
+        },
         fragment::CellText,
         Settings,
     };
