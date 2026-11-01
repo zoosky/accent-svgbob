@@ -10,6 +10,11 @@
 - Add byte-parity goldens (`tests/parity/`, all `test_data/*.bob` fixtures
   through the three public entry points) generated at the last sauron
   revision, with `examples/gen_parity.rs` to regenerate them deliberately.
+- Dependency currency: `nalgebra` 0.32 -> 0.34 and `parry2d` 0.13 -> 0.25
+  (lockstep; parry2d 0.25 is the last release on nalgebra before the glam
+  backend switch), `unicode-width` 0.1 -> 0.2, `itertools` 0.11 -> 0.15,
+  and `once_cell` replaced with `std::sync::LazyLock`. SVG output is
+  unchanged: the byte-parity suites pass across every bump.
 
 ## 0.7.2
 - update to sauron 0.60
