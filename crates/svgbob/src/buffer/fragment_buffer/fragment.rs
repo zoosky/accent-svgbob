@@ -1,52 +1,21 @@
 use crate::{
-    buffer::Cell,
-    map::unicode_map::FRAGMENTS_UNICODE,
-    vdom::Node,
-    Merge,
-    Point,
+    buffer::Cell, map::unicode_map::FRAGMENTS_UNICODE, vdom::Node, Merge, Point,
 };
-pub use crate::{
-    Property,
-    Settings,
-    Signal,
-};
+pub use crate::{Property, Settings, Signal};
 pub use arc::Arc;
 pub use circle::Circle;
 pub use line::Line;
-pub use marker_line::{
-    Marker,
-    MarkerLine,
-};
+pub use marker_line::{Marker, MarkerLine};
 use parry2d::{
-    bounding_volume::{
-        Aabb,
-        BoundingVolume,
-    },
+    bounding_volume::{Aabb, BoundingVolume},
     math::Isometry,
-    query::{
-        intersection_test,
-        PointQuery,
-    },
-    shape::{
-        ConvexPolygon,
-        Polyline,
-        Segment,
-        Shape,
-    },
+    query::{intersection_test, PointQuery},
+    shape::{ConvexPolygon, Polyline, Segment, Shape},
 };
-pub use polygon::{
-    Polygon,
-    PolygonTag,
-};
+pub use polygon::{Polygon, PolygonTag};
 pub use rect::Rect;
-use std::{
-    cmp::Ordering,
-    fmt,
-};
-pub use text::{
-    CellText,
-    Text,
-};
+use std::{cmp::Ordering, fmt};
+pub use text::{CellText, Text};
 
 mod arc;
 mod circle;
@@ -168,44 +137,32 @@ impl Fragment {
     /// therefore can be in a group together
     pub(crate) fn is_contacting(&self, other: &Self) -> bool {
         match self {
-            Fragment::Line(line) => {
-                match other {
-                    Fragment::Line(other) => line.is_touching(other),
-                    Fragment::Arc(other_arc) => line.is_touching_arc(other_arc),
-                    Fragment::Polygon(polygon) => false,
-                    Fragment::Circle(circle) => line.is_touching_circle(circle),
-                    _ => false,
+            Fragment::Line(line) => match other {
+                Fragment::Line(other) => line.is_touching(other),
+                Fragment::Arc(other_arc) => line.is_touching_arc(other_arc),
+                Fragment::Polygon(polygon) => false,
+                Fragment::Circle(circle) => line.is_touching_circle(circle),
+                _ => false,
+            },
+            Fragment::Polygon(polygon) => match other {
+                Fragment::Line(other) => false,
+                _ => false,
+            },
+            Fragment::Arc(arc) => match other {
+                Fragment::Arc(other_arc) => arc.is_touching(other_arc),
+                Fragment::Line(other_line) => other_line.is_touching_arc(arc),
+                _ => false,
+            },
+            Fragment::Circle(circle) => match other {
+                Fragment::Line(other) => other.is_touching_circle(circle),
+                _ => false,
+            },
+            Fragment::CellText(ctext) => match other {
+                Fragment::CellText(other_ctext) => {
+                    ctext.is_contacting(other_ctext)
                 }
-            }
-            Fragment::Polygon(polygon) => {
-                match other {
-                    Fragment::Line(other) => false,
-                    _ => false,
-                }
-            }
-            Fragment::Arc(arc) => {
-                match other {
-                    Fragment::Arc(other_arc) => arc.is_touching(other_arc),
-                    Fragment::Line(other_line) => {
-                        other_line.is_touching_arc(arc)
-                    }
-                    _ => false,
-                }
-            }
-            Fragment::Circle(circle) => {
-                match other {
-                    Fragment::Line(other) => other.is_touching_circle(circle),
-                    _ => false,
-                }
-            }
-            Fragment::CellText(ctext) => {
-                match other {
-                    Fragment::CellText(other_ctext) => {
-                        ctext.is_contacting(other_ctext)
-                    }
-                    _ => false,
-                }
-            }
+                _ => false,
+            },
             _ => false,
         }
     }
@@ -667,12 +624,11 @@ impl Ord for Fragment {
             (Fragment::CellText(ctext), Fragment::CellText(other)) => {
                 ctext.cmp(other)
             }
-            _ => {
-                self.mins()
-                    .cmp(&other.mins())
-                    .then(self.maxs().cmp(&other.maxs()))
-                    .then(self.rank().cmp(&other.rank()))
-            }
+            _ => self
+                .mins()
+                .cmp(&other.mins())
+                .then(self.maxs().cmp(&other.maxs()))
+                .then(self.rank().cmp(&other.rank())),
         }
     }
 }

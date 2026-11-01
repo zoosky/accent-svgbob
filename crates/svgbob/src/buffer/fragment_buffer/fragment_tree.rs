@@ -1,9 +1,6 @@
 use crate::{
     buffer::fragment_buffer::FragmentSpan,
-    vdom::{
-        attributes::classes,
-        Node,
-    },
+    vdom::{attributes::classes, Node},
     Fragment,
 };
 

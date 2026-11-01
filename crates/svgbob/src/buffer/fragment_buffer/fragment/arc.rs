@@ -3,23 +3,14 @@ use crate::{
     fragment::Bounds,
     util,
     vdom::{
-        attributes::{
-            class,
-            d,
-        },
+        attributes::{class, d},
         elements::path,
         Node,
     },
     Point,
 };
-use parry2d::shape::{
-    Segment,
-    Shape,
-};
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use parry2d::shape::{Segment, Shape};
+use std::{cmp::Ordering, fmt};
 
 /// TODO: Add an is_broken field when there is a presence of `~` or `!` in the span
 #[derive(Debug, Clone)]

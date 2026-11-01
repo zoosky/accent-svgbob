@@ -1,29 +1,15 @@
 use crate::{
-    fragment::{
-        marker_line::Marker,
-        Bounds,
-    },
+    fragment::{marker_line::Marker, Bounds},
     vdom::{
-        attributes::{
-            classes_flag,
-            points,
-        },
+        attributes::{classes_flag, points},
         elements::polygon,
         Node,
     },
-    Cell,
-    Direction,
-    Point,
+    Cell, Direction, Point,
 };
 use nalgebra::Point2;
-use parry2d::shape::{
-    shape::Shape,
-    Polyline,
-};
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use parry2d::shape::{shape::Shape, Polyline};
+use std::{cmp::Ordering, fmt};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum PolygonTag {

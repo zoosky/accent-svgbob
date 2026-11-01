@@ -6,10 +6,7 @@
 //! must match byte for byte. Regenerate deliberately with
 //! `cargo run -p svgbob --example gen_parity` and review the diff.
 
-use std::{
-    fs,
-    path::Path,
-};
+use std::{fs, path::Path};
 
 fn fixtures() -> Vec<(String, String)> {
     let data = Path::new(env!("CARGO_MANIFEST_DIR")).join("test_data");

@@ -1,27 +1,13 @@
 use crate::{
-    buffer::{
-        Cell,
-        CellGrid,
-        Span,
-    },
+    buffer::{Cell, CellGrid, Span},
     fragment::Bounds,
     vdom::{
-        attributes::{
-            x,
-            y,
-        },
-        elements,
-        text,
-        Node,
+        attributes::{x, y},
+        elements, text, Node,
     },
-    FragmentSpan,
-    Point,
+    FragmentSpan, Point,
 };
-use std::{
-    borrow::Cow,
-    cmp::Ordering,
-    fmt,
-};
+use std::{borrow::Cow, cmp::Ordering, fmt};
 
 /// A horizontal cell text
 /// Operated based on cell
@@ -237,12 +223,7 @@ impl PartialEq for Text {
 mod tests {
     use super::*;
     use crate::{
-        buffer::{
-            Cell,
-            CellBuffer,
-            Contacts,
-            Span,
-        },
+        buffer::{Cell, CellBuffer, Contacts, Span},
         fragment::CellText,
         Settings,
     };

@@ -1,54 +1,21 @@
 use crate::{
     buffer::{
-        fragment_buffer::{
-            FragmentSpan,
-            FragmentTree,
-        },
-        Fragment,
-        StringBuffer,
+        fragment_buffer::{FragmentSpan, FragmentTree},
+        Fragment, StringBuffer,
     },
     fragment::CellText,
     util::parser,
     vdom::{
         attributes::{
-            class,
-            cx,
-            cy,
-            height,
-            id,
-            marker_height,
-            marker_width,
-            orient,
-            points,
-            r,
-            ref_x,
-            ref_y,
-            view_box,
-            width,
-            x,
-            xmlns,
-            y,
+            class, cx, cy, height, id, marker_height, marker_width, orient,
+            points, r, ref_x, ref_y, view_box, width, x, xmlns, y,
         },
-        elements::{
-            self,
-            circle,
-            defs,
-            g,
-            marker,
-            polygon,
-            rect,
-            svg,
-        },
-        text,
-        Node,
+        elements::{self, circle, defs, g, marker, polygon, rect, svg},
+        text, Node,
     },
-    Merge,
-    Settings,
+    Merge, Settings,
 };
-pub use cell::{
-    Cell,
-    CellGrid,
-};
+pub use cell::{Cell, CellGrid};
 pub use contacts::Contacts;
 pub use endorse::Endorse;
 use itertools::Itertools;
@@ -56,10 +23,7 @@ pub use span::Span;
 use std::{
     collections::BTreeMap,
     fmt,
-    ops::{
-        Deref,
-        DerefMut,
-    },
+    ops::{Deref, DerefMut},
 };
 use unicode_width::UnicodeWidthChar;
 
@@ -568,10 +532,8 @@ impl CellBuffer {
                 // in StringBuffer::from allocates cells per char, and since
                 // unicode-width 0.2 the string-level width collapses ZWJ and
                 // variation-selector sequences, so the two no longer agree.
-                let escaped_unicode_width: usize = escaped
-                    .chars()
-                    .map(|ch| ch.width().unwrap_or(0))
-                    .sum();
+                let escaped_unicode_width: usize =
+                    escaped.chars().map(|ch| ch.width().unwrap_or(0)).sum();
                 let cell = Cell::new(*start as i32, line as i32);
                 escaped_text.push((cell, escaped));
                 no_escaped_text += &input_chars[index..*start].iter().fold(

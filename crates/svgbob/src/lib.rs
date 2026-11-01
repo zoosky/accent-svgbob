@@ -11,15 +11,8 @@ pub mod util;
 pub mod vdom;
 
 pub use buffer::{
-    fragment,
-    fragment::Fragment,
-    Cell,
-    CellBuffer,
-    Direction,
-    FragmentBuffer,
-    FragmentSpan,
-    Property,
-    Signal,
+    fragment, fragment::Fragment, Cell, CellBuffer, Direction, FragmentBuffer,
+    FragmentSpan, Property, Signal,
 };
 pub use merge::Merge;
 pub use nalgebra;

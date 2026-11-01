@@ -9,8 +9,10 @@ use crate::{
     fragment::{arc, broken_line, circle, line, polygon, rect, Fragment},
     Property,
 };
-use std::sync::LazyLock;
-use std::collections::{BTreeMap, HashMap};
+use std::{
+    collections::{BTreeMap, HashMap},
+    sync::LazyLock,
+};
 
 /// a lookup table for character and their corresponding shapes
 /// static ref to provide a one time processing

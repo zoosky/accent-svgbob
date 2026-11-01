@@ -2,30 +2,14 @@ use crate::{
     fragment::Bounds,
     util,
     vdom::{
-        attributes::{
-            classes_flag,
-            height,
-            rx,
-            width,
-            x,
-            y,
-        },
+        attributes::{classes_flag, height, rx, width, x, y},
         elements::rect,
         Node,
     },
-    Cell,
-    Point,
+    Cell, Point,
 };
-use parry2d::shape::{
-    ConvexPolygon,
-    Polyline,
-    Segment,
-    Shape,
-};
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use parry2d::shape::{ConvexPolygon, Polyline, Segment, Shape};
+use std::{cmp::Ordering, fmt};
 
 #[derive(Debug, Clone)]
 pub struct Rect {

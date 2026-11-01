@@ -1,47 +1,21 @@
 use crate::{
-    buffer::{
-        fragment_buffer::fragment::polygon::Polygon,
-        Cell,
-        Fragment,
-    },
-    fragment::{
-        marker_line,
-        Bounds,
-        Circle,
-        Marker,
-        MarkerLine,
-    },
-    util,
-    Direction,
-    Point,
+    buffer::{fragment_buffer::fragment::polygon::Polygon, Cell, Fragment},
+    fragment::{marker_line, Bounds, Circle, Marker, MarkerLine},
+    util, Direction, Point,
 };
 use parry2d::{
     bounding_volume::Aabb,
     math::Isometry,
     query::PointQuery,
-    shape::{
-        Polyline,
-        Segment,
-        Shape,
-    },
+    shape::{Polyline, Segment, Shape},
 };
-use std::{
-    cmp::Ordering,
-    fmt,
-};
+use std::{cmp::Ordering, fmt};
 
 use crate::{
     fragment::Arc,
     vdom::{
-        attributes::{
-            classes_flag,
-            x1,
-            x2,
-            y1,
-            y2,
-        },
-        elements,
-        Node,
+        attributes::{classes_flag, x1, x2, y1, y2},
+        elements, Node,
     },
 };
 
@@ -473,8 +447,7 @@ impl PartialEq for Line {
 mod tests {
     use super::*;
     use crate::buffer::{
-        fragment_buffer::fragment::polygon::PolygonTag,
-        CellGrid,
+        fragment_buffer::fragment::polygon::PolygonTag, CellGrid,
     };
 
     #[test]
