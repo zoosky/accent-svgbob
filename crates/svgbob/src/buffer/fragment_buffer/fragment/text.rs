@@ -110,7 +110,6 @@ impl From<CellText> for FragmentSpan {
         let cells: Vec<(Cell, char)> = ct
             .content
             .chars()
-            .into_iter()
             .enumerate()
             .map(|(i, ch)| (Cell::new(ct.start.x + i as i32, ct.start.y), ch))
             .collect();

@@ -111,13 +111,13 @@ impl Contacts {
     }
 
     pub fn hit_cell(&self, needle: Cell) -> bool {
-        self.cells().iter().any(|cell| *cell == needle)
+        self.cells().contains(&needle)
     }
 }
 
 impl Merge for Contacts {
     fn merge(&self, other: &Self) -> Option<Self> {
-        if self.is_contacting(&other) {
+        if self.is_contacting(other) {
             let mut fragment_spans: Vec<FragmentSpan> = self.0.clone();
             fragment_spans.extend_from_slice(&other.0);
             Some(Contacts(fragment_spans))

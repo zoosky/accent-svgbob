@@ -352,11 +352,7 @@ impl Fragment {
             };
 
         if let Some(input_text) = input_text {
-            if let Ok(tags) = crate::util::parser::parse_css_tag(input_text) {
-                tags
-            } else {
-                vec![]
-            }
+            crate::util::parser::parse_css_tag(input_text).unwrap_or_default()
         } else {
             vec![]
         }

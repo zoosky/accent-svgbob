@@ -71,10 +71,8 @@ impl CellBuffer {
     }
 
     pub fn bounds(&self) -> Option<(Cell, Cell)> {
-        let xlimits =
-            self.iter().map(|(cell, _)| cell.x).minmax().into_option();
-        let ylimits =
-            self.iter().map(|(cell, _)| cell.y).minmax().into_option();
+        let xlimits = self.keys().map(|cell| cell.x).minmax().into_option();
+        let ylimits = self.keys().map(|cell| cell.y).minmax().into_option();
         match (xlimits, ylimits) {
             (Some((min_x, max_x)), Some((min_y, max_y))) => {
                 Some((Cell::new(min_x, min_y), Cell::new(max_x, max_y)))
@@ -125,11 +123,8 @@ impl CellBuffer {
         let legend_css = self.legend_css();
         let (group_nodes, fragments) = self.group_nodes_and_fragments(settings);
 
-        let svg_node =
-            Self::fragments_to_node(fragments, legend_css, settings, w, h)
-                .with_children(group_nodes);
-
-        svg_node
+        Self::fragments_to_node(fragments, legend_css, settings, w, h)
+            .with_children(group_nodes)
     }
 
     /// return the fragments that are (close objects, touching grouped fragments)
@@ -157,7 +152,7 @@ impl CellBuffer {
     }
 
     /// return fragments that are Rect, Circle,
-    pub(crate) fn into_shapes_fragment(&self) -> Vec<FragmentSpan> {
+    pub(crate) fn shapes_fragment(&self) -> Vec<FragmentSpan> {
         let endorse = self.endorse_to_fragment_spans();
         endorse
             .accepted
@@ -187,7 +182,7 @@ impl CellBuffer {
                     endorse
                         .rejects
                         .into_iter()
-                        .flat_map(|span| <Vec<Contacts>>::from(span))
+                        .flat_map(<Vec<Contacts>>::from)
                         .collect::<Vec<Contacts>>(),
                 )
             })
@@ -214,7 +209,7 @@ impl CellBuffer {
         let accepted: Vec<FragmentSpan> = endorsed_fragments
             .into_iter()
             .flatten()
-            .chain(single_member_fragments.into_iter())
+            .chain(single_member_fragments)
             .collect();
         Endorse { accepted, rejects }
     }
@@ -727,7 +722,7 @@ This is a text
 
     "#;
         let buffer = CellBuffer::from(art);
-        let shapes = buffer.into_shapes_fragment();
+        let shapes = buffer.shapes_fragment();
         println!("shapes: {:#?}", shapes);
         assert_eq!(2, shapes.len());
     }
@@ -741,7 +736,7 @@ This is a text
 
     "#;
         let buffer = CellBuffer::from(art);
-        let shapes = buffer.into_shapes_fragment();
+        let shapes = buffer.shapes_fragment();
         println!("shapes: {:#?}", shapes);
         assert_eq!(1, shapes.len());
         assert!(shapes[0]

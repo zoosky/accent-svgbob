@@ -134,7 +134,7 @@ fn main() {
         settings.scale *= s;
     }
 
-    let svg = svgbob::to_svg_with_settings(&*bob, &settings);
+    let svg = svgbob::to_svg_with_settings(&bob, &settings);
 
     if let Some(file) = args.get_one::<String>("output").map(String::as_str) {
         if let Err(e) = fs::write(file, &svg) {
@@ -158,8 +158,8 @@ fn parse_value_of<T: FromStr>(args: &ArgMatches, arg_name: &str) -> Option<T>
 where
     <T as std::str::FromStr>::Err: std::fmt::Display,
 {
-    return args.get_one::<String>(arg_name).map(|arg| {
-        match arg.parse::<T>() {
+    args.get_one::<String>(arg_name)
+        .map(|arg| match arg.parse::<T>() {
             Ok(a) => a,
             Err(e) => {
                 use std::io::Write;
@@ -173,8 +173,7 @@ where
                 .unwrap();
                 exit(1);
             }
-        }
-    });
+        })
 }
 
 // Batch convert files to svg
@@ -250,7 +249,7 @@ fn convert_file(input: PathBuf, output: PathBuf) -> Result<(), Box<dyn Error>> {
     let mut bob = String::new();
     let mut f = File::open(&input)?;
     f.read_to_string(&mut bob).unwrap();
-    let svg = svgbob::to_svg_with_settings(&*bob, &Settings::default());
+    let svg = svgbob::to_svg_with_settings(&bob, &Settings::default());
     fs::write(&output, &svg)?;
     Ok(())
 }

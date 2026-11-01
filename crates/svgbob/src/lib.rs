@@ -1,4 +1,7 @@
 #![deny(warnings)]
+// The unicode property maps bind every neighbor cell to a named variable
+// (top_left, bottom_right, ...) for readability even where a pattern only
+// uses a few of them, so a blanket unused allow is deliberate here.
 #![allow(unused)]
 #![deny(clippy::all)]
 

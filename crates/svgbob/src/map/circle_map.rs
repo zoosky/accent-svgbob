@@ -38,9 +38,11 @@ pub const CIRCLES_TO_SKIP_FOR_ARC: usize = 3;
 /// f32 - how many cell from the top most to the center.y of the circle,
 /// Cell - center cell in arc2
 /// )
-static CIRCLE_ART_MAP: LazyLock<
-    Vec<(&'static str, Horizontal, f32, f32, Cell)>,
-> = LazyLock::new(|| {
+/// One circle-art entry: (art, edge case, offset from the left most cell to
+/// center.x, offset from the top most cell to center.y, center cell in arc2).
+type CircleArtEntry = (&'static str, Horizontal, f32, f32, Cell);
+
+static CIRCLE_ART_MAP: LazyLock<Vec<CircleArtEntry>> = LazyLock::new(|| {
     vec![
         // CIRCLE_0
         //center 1,0,k, radius = 0.5
@@ -644,7 +646,7 @@ static CIRCLE_MAP: LazyLock<Vec<CircleArt>> = LazyLock::new(|| {
             (art, edge_case, offset_center_x, offset_center_y, arc2_center),
         )| {
             CircleArt {
-                ascii_art: *art,
+                ascii_art: art,
                 start_edge: *edge_case,
                 offset_center_x: *offset_center_x,
                 offset_center_y: *offset_center_y,
@@ -1190,7 +1192,7 @@ fn is_subset_of<T: PartialEq>(
 ) -> (bool, Vec<usize>) {
     let mut unmatched = vec![];
     let mut matched = 0;
-    for (_i, set) in subset.iter().enumerate() {
+    for set in subset.iter() {
         if big_set.contains(set) {
             matched += 1;
         }

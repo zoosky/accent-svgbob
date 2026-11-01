@@ -19,7 +19,7 @@ use std::{cmp, fmt, sync::Arc};
 ///     7├─┼─┼─┼─┤         │ │ │ │ │
 ///     8└─┴─┴─┴─┘        U└─┴─┴─┴─┘Y
 /// ```                      V W X
-
+///
 /// At least sum = 6
 /// Medium + Medium connects (3 + 3)
 /// Strong + Weak connects ( 4 + 2 )

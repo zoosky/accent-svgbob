@@ -29,7 +29,7 @@ use std::{
 ///     7├─┼─┼─┼─┤         │ │ │ │ │
 ///     8└─┴─┴─┴─┘        U└─┴─┴─┴─┘Y
 /// ```                      V W X
-
+///
 pub static ASCII_PROPERTIES: LazyLock<BTreeMap<char, Property>> =
     LazyLock::new(|| {
         let cell = Cell::new(0, 0);

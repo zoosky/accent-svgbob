@@ -309,10 +309,8 @@ impl From<Span> for Vec<Contacts> {
     fn from(span: Span) -> Vec<Contacts> {
         let fb = FragmentBuffer::from(span);
         let merged_fragments: Vec<FragmentSpan> = fb.merge_fragment_spans();
-        let contacts: Vec<Contacts> = merged_fragments
-            .into_iter()
-            .map(|frag| Contacts::new(frag))
-            .collect();
+        let contacts: Vec<Contacts> =
+            merged_fragments.into_iter().map(Contacts::new).collect();
         Contacts::merge_recursive(contacts)
     }
 }
@@ -354,7 +352,7 @@ impl fmt::Display for Span {
                 }
             }
         }
-        write!(f, "{}", buffer.to_string())
+        write!(f, "{buffer}")
     }
 }
 

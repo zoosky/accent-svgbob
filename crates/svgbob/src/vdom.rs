@@ -360,7 +360,8 @@ pub mod attributes {
             "class",
             pairs
                 .into_iter()
-                .filter_map(|(name, flag)| flag.then(|| name.to_string()))
+                .filter(|(_, flag)| *flag)
+                .map(|(name, _)| name.to_string())
                 .collect(),
         )
     }

@@ -81,10 +81,8 @@ impl FragmentBuffer {
     }
 
     fn bounds(&self) -> Option<(Cell, Cell)> {
-        let xlimits =
-            self.iter().map(|(cell, _)| cell.x).minmax().into_option();
-        let ylimits =
-            self.iter().map(|(cell, _)| cell.y).minmax().into_option();
+        let xlimits = self.keys().map(|cell| cell.x).minmax().into_option();
+        let ylimits = self.keys().map(|cell| cell.y).minmax().into_option();
         match (xlimits, ylimits) {
             (Some((min_x, max_x)), Some((min_y, max_y))) => {
                 Some((Cell::new(min_x, min_y), Cell::new(max_x, max_y)))

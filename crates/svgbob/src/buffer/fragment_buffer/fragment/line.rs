@@ -118,8 +118,7 @@ impl Line {
     }
 
     fn slope(&self) -> f32 {
-        (2.0 * self.end.y as f32 - 2.0 * self.start.y as f32)
-            / (self.end.x as f32 - self.start.x as f32)
+        (2.0 * self.end.y - 2.0 * self.start.y) / (self.end.x - self.start.x)
     }
 
     fn full_angle(&self) -> f32 {
