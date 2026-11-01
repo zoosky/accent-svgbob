@@ -1,6 +1,13 @@
 # Changelog
 
 ## Unreleased
+- CI now gates every push and PR: rustfmt check, clippy with -D warnings
+  across all targets, the full test suite including the byte-parity corpus,
+  a build check on the declared MSRV (1.87), and cargo-deny advisories.
+  The workspace is clippy-clean for the first time (26 findings fixed in
+  the lib, plus the CLI and test targets), and formatting moved to a
+  stable-rustfmt config at the workspace root (the old nested config was
+  nightly-only, which is why stable cargo fmt always produced drift).
 - Remove the `sauron` dependency. svgbob only used it to build an element
   tree and print it; an internal `vdom` module now does both, byte-identical
   to sauron 0.61's output. This drops the whole web subtree (sauron,
