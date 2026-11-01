@@ -61,7 +61,7 @@ use std::{
         DerefMut,
     },
 };
-use unicode_width::UnicodeWidthStr;
+use unicode_width::UnicodeWidthChar;
 
 mod cell;
 mod contacts;
@@ -563,7 +563,15 @@ impl CellBuffer {
                         acc
                     },
                 );
-                let escaped_unicode_width = escaped.width();
+                // Sum per-char widths instead of calling
+                // UnicodeWidthStr::width on the whole string: the cell grid
+                // in StringBuffer::from allocates cells per char, and since
+                // unicode-width 0.2 the string-level width collapses ZWJ and
+                // variation-selector sequences, so the two no longer agree.
+                let escaped_unicode_width: usize = escaped
+                    .chars()
+                    .map(|ch| ch.width().unwrap_or(0))
+                    .sum();
                 let cell = Cell::new(*start as i32, line as i32);
                 escaped_text.push((cell, escaped));
                 no_escaped_text += &input_chars[index..*start].iter().fold(

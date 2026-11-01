@@ -1,6 +1,6 @@
 [package]
 name = "svgbob"
-version = "0.7.6"
+version = "0.8.0"
 authors = ["Jovansonlee Cesar <ivanceras@gmail.com>"]
 description = "Transform your ascii diagrams into happy little SVG"
 repository = "https://github.com/ivanceras/svgbob"
@@ -8,6 +8,7 @@ documentation = "https://docs.rs/svgbob"
 keywords = ["ascii", "text", "diagram", "svg", "bob"]
 license = "Apache-2.0"
 edition = "2021"
+rust-version = "1.87"
 
 [dependencies]
 nalgebra = "0.34"
